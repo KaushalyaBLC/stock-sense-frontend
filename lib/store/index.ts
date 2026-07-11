@@ -1,6 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { authApi } from "./auth-api";
 import { marketApi } from "./market-api";
+import { chatApi } from "./chat-api";
 import { authReducer } from "./auth-slice";
 
 export const makeStore = () =>
@@ -9,9 +10,14 @@ export const makeStore = () =>
       auth: authReducer,
       [authApi.reducerPath]: authApi.reducer,
       [marketApi.reducerPath]: marketApi.reducer,
+      [chatApi.reducerPath]: chatApi.reducer,
     },
     middleware: (getDefault) =>
-      getDefault().concat(authApi.middleware, marketApi.middleware),
+      getDefault().concat(
+        authApi.middleware,
+        marketApi.middleware,
+        chatApi.middleware,
+      ),
   });
 
 export type AppStore = ReturnType<typeof makeStore>;

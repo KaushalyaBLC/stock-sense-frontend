@@ -8,9 +8,8 @@ import {
   Newspaper,
   Building2,
   MessageSquareText,
-  Bell,
   FileText,
-  LineChart,
+  BarChart2,
   Settings,
   type LucideIcon,
 } from "lucide-react";
@@ -21,12 +20,12 @@ const ITEMS: { label: string; href: string; icon: LucideIcon }[] = [
   { label: "Watchlist", href: "/dashboard/watchlist", icon: Eye },
   { label: "Market News", href: "/dashboard/news", icon: Newspaper },
   { label: "Companies", href: "/dashboard/companies", icon: Building2 },
+  { label: "Price Charts", href: "/dashboard/charts", icon: BarChart2 },
   { label: "AI Assistant", href: "/dashboard/chat", icon: MessageSquareText },
-  { label: "Alerts", href: "/dashboard/alerts", icon: Bell },
   { label: "Weekly Summary", href: "/dashboard/summary", icon: FileText },
-  { label: "Portfolio", href: "/dashboard/portfolio", icon: LineChart },
   { label: "Settings", href: "/dashboard/settings", icon: Settings },
 ];
+
 
 export function SidebarNav() {
   const pathname = usePathname();

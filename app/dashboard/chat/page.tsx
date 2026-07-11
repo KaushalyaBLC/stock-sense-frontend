@@ -1,15 +1,37 @@
-import type { Metadata } from "next";
-import { MessageSquareText } from "lucide-react";
-import { ComingSoon } from "@/components/dashboard/coming-soon";
+"use client";
 
-export const metadata: Metadata = { title: "AI Assistant — StockSense" };
+import { ChatPanel } from "@/components/chat/chat-panel";
+import { useGeneralChatMutation, type ChatTurn } from "@/lib/store/chat-api";
+
+const SUGGESTIONS = [
+  "What's the outlook for banking stocks this week?",
+  "Any recent positive news on the CSE?",
+  "Which companies were affected by tourism news?",
+  "Summarize this week's market mood",
+];
 
 export default function ChatPage() {
+  const [generalChat] = useGeneralChatMutation();
+
+  async function send(message: string, history: ChatTurn[]) {
+    const res = await generalChat({ message, history }).unwrap();
+    return res.answer;
+  }
+
   return (
-    <ComingSoon
-      icon={MessageSquareText}
-      title="AI Assistant"
-      description="Ask questions in plain English about any CSE company or news story, and get clear answers backed by our AI analysis."
-    />
+    <div className="mx-auto max-w-[900px]">
+      <div className="mb-4">
+        <h1 className="text-2xl font-bold tracking-tight">AI Assistant</h1>
+        <p className="mt-1 text-sm text-text-secondary">
+          Ask anything about CSE companies and the news that moves them.
+        </p>
+      </div>
+      <ChatPanel
+        send={send}
+        suggestions={SUGGESTIONS}
+        emptyTitle="Ask StockSense AI"
+        emptyBody="I know CSE company profiles and recent news. Ask me anything — in plain English."
+      />
+    </div>
   );
 }

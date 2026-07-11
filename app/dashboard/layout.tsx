@@ -23,10 +23,10 @@ export default async function DashboardLayout({
     .join("");
 
   return (
-    <div className="grid min-h-[100dvh] lg:grid-cols-[260px_1fr]">
-      {/* Sidebar */}
-      <aside className="hidden flex-col border-r border-border bg-surface lg:flex">
-        <div className="flex h-16 items-center border-b border-border px-5">
+    <div className="grid h-[100dvh] overflow-hidden lg:grid-cols-[260px_1fr]">
+      {/* Sidebar — fixed height, scrolls independently if content overflows */}
+      <aside className="hidden flex-col border-r border-border bg-surface overflow-y-auto lg:flex">
+        <div className="flex h-16 shrink-0 items-center border-b border-border px-5">
           <Logo />
         </div>
         <div className="flex flex-1 flex-col justify-between p-3">
@@ -37,9 +37,9 @@ export default async function DashboardLayout({
         </div>
       </aside>
 
-      {/* Main */}
-      <div className="flex min-w-0 flex-col">
-        <header className="sticky top-0 z-20 flex h-16 items-center gap-4 border-b border-border bg-card/80 px-5 backdrop-blur-sm sm:px-6">
+      {/* Main — its own scroll context; header sticks to the top of this column */}
+      <div className="flex min-w-0 flex-col overflow-y-auto">
+        <header className="sticky top-0 z-20 flex h-16 shrink-0 items-center gap-4 border-b border-border bg-card/80 px-5 backdrop-blur-sm sm:px-6">
           <div className="lg:hidden">
             <Logo />
           </div>

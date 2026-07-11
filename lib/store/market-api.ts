@@ -1,6 +1,21 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import type { ApiNews, ApiSignal, Overview } from "@/lib/server-market";
 
+export type PricePoint = {
+  date: string;
+  open: number;
+  high: number;
+  low: number;
+  close: number;
+  volume: number;
+};
+
+export type PriceData = {
+  ticker: string;
+  range: string;
+  points: PricePoint[];
+};
+
 /**
  * Client-side reads for dashboard sub-pages. Calls the same-origin BFF
  * (/api/market/*), which forwards to core with the httpOnly access-token cookie.
@@ -77,6 +92,10 @@ export const marketApi = createApi({
       query: () => "/sectors",
       transformResponse: (r: { data: string[] }) => r.data,
     }),
+    getPrices: builder.query<PriceData, { ticker: string; range?: string }>({
+      query: ({ ticker, range = "3M" }) => `/prices/${ticker}?range=${range}`,
+      transformResponse: (r: { data: PriceData }) => r.data,
+    }),
   }),
 });
 
@@ -95,4 +114,5 @@ export const {
   useGetNewsQuery,
   useGetNewsFeedQuery,
   useGetSectorsQuery,
+  useGetPricesQuery,
 } = marketApi;
