@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { font-family: 'Inter', -apple-system, sans-serif; background: var(--bg); }
+  :root {
+    --bg:#F8FAFC; --card:#FFFFFF; --border:#E2E8F0; --text:#111827; --muted:#64748B;
+    --navy:#0F172A; --blue:#2563EB; --green:#16A34A; --red:#DC2626; --amber:#F59E0B;
+    --soft:#F1F5F9; --shadow:0 1px 3px rgba(15,23,42,.06),0 1px 2px rgba(15,23,42,.04);
+    --shadowlg:0 10px 30px -12px rgba(15,23,42,.18);
+  }
+  [data-theme="dark"] {
+    --bg:#020617; --card:#0F172A; --border:#1E293B; --text:#E5E7EB; --muted:#94A3B8;
+    --navy:#0B1220; --blue:#3B82F6; --green:#22C55E; --red:#EF4444; --amber:#F59E0B;
+    --soft:#0B1322; --shadow:0 1px 3px rgba(0,0,0,.4); --shadowlg:0 16px 40px -16px rgba(0,0,0,.6);
+  }
+  ::-webkit-scrollbar{width:10px;height:10px}
+  ::-webkit-scrollbar-thumb{background:var(--border);border-radius:8px}
+  .ss-cols-4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+  .ss-cols-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .ss-cols-2{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+  .ss-hero{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center}
+  .ss-shell{display:grid;grid-template-columns:248px 1fr;min-height:100vh}
+  .ss-bottomnav{display:none}
+  .ss-hideMobile{display:block}
+  @media(max-width:1024px){
+    .ss-cols-4{grid-template-columns:repeat(2,1fr)}
+    .ss-cols-3{grid-template-columns:1fr 1fr}
+    .ss-hero{grid-template-columns:1fr;gap:32px}
+    .ss-shell{grid-template-columns:1fr}
+    .ss-sidebar{display:none!important}
+    .ss-bottomnav{display:flex!important}
+    .ss-main{padding-bottom:76px!important}
+    .ss-hideMobile{display:none!important}
+  }
+  @media(max-width:640px){
+    .ss-cols-4{grid-template-columns:1fr 1fr}
+    .ss-cols-3{grid-template-columns:1fr}
+    .ss-cols-2{grid-template-columns:1fr}
+  }
+  input,button,textarea{font-family:inherit}
+  input:focus,textarea:focus{outline:2px solid var(--blue);outline-offset:1px}
+  button:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+</style>
+</helmet>
+
+<div data-theme="{{ themeAttr }}" style="background:var(--bg);color:var(--text);min-height:100vh">
+
+  <!-- ============ LANDING ============ -->
+  <sc-if value="{{ isLanding }}" hint-placeholder-val="{{ true }}">
+  <div style="max-width:1180px;margin:0 auto;padding:0 24px">
+    <header style="display:flex;align-items:center;justify-content:space-between;padding:20px 0">
+      <div style="display:flex;align-items:center;gap:10px">{{ logo }}</div>
+      <nav class="ss-hideMobile" style="display:flex;gap:28px;align-items:center;font-size:14px;font-weight:500;color:var(--muted)">
+        <span>Features</span><span>How it works</span><span>Market Brief</span><span>Disclaimer</span>
+      </nav>
+      <div style="display:flex;gap:10px;align-items:center">
+        <button onClick="{{ goLogin }}" style="padding:9px 16px;border-radius:10px;border:1px solid var(--border);background:var(--card);color:var(--navy);font-weight:600;font-size:14px;cursor:pointer">Log in</button>
+        <button onClick="{{ goRegister }}" style="padding:9px 18px;border-radius:10px;border:none;background:var(--blue);color:#fff;font-weight:600;font-size:14px;cursor:pointer">Get Started</button>
+      </div>
+    </header>
+
+    <section class="ss-hero" style="padding:56px 0 40px">
+      <div>
+        <div style="display:inline-flex;align-items:center;gap:8px;background:var(--soft);border:1px solid var(--border);padding:6px 12px;border-radius:999px;font-size:12.5px;font-weight:600;color:var(--blue)">
+          <span style="width:7px;height:7px;border-radius:50%;background:var(--blue)"></span> AI for the Colombo Stock Exchange
+        </div>
+        <h1 style="font-size:46px;line-height:1.08;letter-spacing:-.02em;margin:20px 0 0;font-weight:800;color:var(--text)">Make sense of CSE market news with AI.</h1>
+        <p style="font-size:17px;line-height:1.6;color:var(--muted);margin:18px 0 0;max-width:520px">StockSense analyzes financial news, detects affected CSE-listed companies, and gives clear AI stock signals, confidence scores, alerts, and daily market summaries.</p>
+        <div style="display:flex;gap:12px;margin-top:28px;flex-wrap:wrap">
+          <button onClick="{{ goRegister }}" style="padding:13px 24px;border-radius:11px;border:none;background:var(--blue);color:#fff;font-weight:600;font-size:15px;cursor:pointer;box-shadow:var(--shadow)">Get Started</button>
+          <button onClick="{{ goDashboard }}" style="padding:13px 24px;border-radius:11px;border:1px solid var(--border);background:var(--card);color:var(--navy);font-weight:600;font-size:15px;cursor:pointer">View Today's Market Brief</button>
+        </div>
+        <div style="display:flex;gap:24px;margin-top:32px;font-size:13px;color:var(--muted)">
+          <span>● 10 CSE companies tracked</span><span>● AI-powered signals</span><span>● Daily summaries</span>
+        </div>
+      </div>
+      <!-- preview card -->
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:20px;box-shadow:var(--shadowlg);padding:22px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+          <div style="font-weight:700;font-size:15px;color:var(--text)">Today's AI Market Brief</div>
+          <span style="font-size:12px;font-weight:600;color:#fff;background:var(--amber);padding:4px 10px;border-radius:999px">Mixed</span>
+        </div>
+        <div class="ss-cols-2" style="gap:12px">
+          <div style="background:var(--soft);border:1px solid var(--border);border-radius:14px;padding:14px">
+            <div style="font-size:12px;color:var(--muted);font-weight:500">Top positive signal</div>
+            <div style="font-size:18px;font-weight:700;color:var(--green);margin-top:4px">JKH ▲</div>
+            <div style="font-size:11.5px;color:var(--muted)">Tourism news support</div>
+          </div>
+          <div style="background:var(--soft);border:1px solid var(--border);border-radius:14px;padding:14px">
+            <div style="font-size:12px;color:var(--muted);font-weight:500">Top negative signal</div>
+            <div style="font-size:18px;font-weight:700;color:var(--red);margin-top:4px">LOLC ▼</div>
+            <div style="font-size:11.5px;color:var(--muted)">Rate concerns</div>
+          </div>
+          <div style="background:var(--soft);border:1px solid var(--border);border-radius:14px;padding:14px">
+            <div style="font-size:12px;color:var(--muted);font-weight:500">Watchlist alerts</div>
+            <div style="font-size:18px;font-weight:700;color:var(--blue);margin-top:4px">2 new</div>
+            <div style="font-size:11.5px;color:var(--muted)">High-impact news</div>
+          </div>
+          <div style="background:var(--soft);border:1px solid var(--border);border-radius:14px;padding:14px">
+            <div style="font-size:12px;color:var(--muted);font-weight:500">Daily summary</div>
+            <div style="font-size:18px;font-weight:700;color:var(--text);margin-top:4px">Ready</div>
+            <div style="font-size:11.5px;color:var(--muted)">8 news analyzed</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section style="padding:48px 0">
+      <div style="text-align:center;margin-bottom:32px">
+        <h2 style="font-size:28px;font-weight:700;margin:0;color:var(--text)">Everything you need to read the market</h2>
+        <p style="color:var(--muted);font-size:15px;margin-top:8px">Simple insights, not technical jargon.</p>
+      </div>
+      <div class="ss-cols-3">
+        <sc-for list="{{ features }}" as="f" hint-placeholder-count="6">
+          <div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:22px;box-shadow:var(--shadow)">
+            <div style="width:42px;height:42px;border-radius:11px;background:rgba(37,99,235,.1);display:flex;align-items:center;justify-content:center;color:var(--blue)">{{ f.icon }}</div>
+            <div style="font-weight:700;font-size:16px;margin-top:14px;color:var(--text)">{{ f.title }}</div>
+            <div style="font-size:13.5px;color:var(--muted);margin-top:6px;line-height:1.55">{{ f.desc }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <section style="padding:40px 0">
+      <div style="text-align:center;margin-bottom:32px">
+        <h2 style="font-size:28px;font-weight:700;margin:0;color:var(--text)">How StockSense works</h2>
+      </div>
+      <div class="ss-cols-4">
+        <sc-for list="{{ steps }}" as="s" hint-placeholder-count="4">
+          <div style="text-align:center;padding:8px">
+            <div style="width:48px;height:48px;margin:0 auto;border-radius:14px;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:18px">{{ s.n }}</div>
+            <div style="font-size:14px;color:var(--text);margin-top:14px;line-height:1.5;font-weight:500">{{ s.text }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <section style="padding:40px 0">
+      <div class="ss-cols-2" style="align-items:center;gap:40px">
+        <div>
+          <div style="font-size:13px;font-weight:600;color:var(--blue)">EXAMPLE AI SIGNAL</div>
+          <h2 style="font-size:26px;font-weight:700;margin:10px 0;color:var(--text)">Clear signals, with reasoning</h2>
+          <p style="color:var(--muted);font-size:15px;line-height:1.6">Every signal shows a direction, a confidence score, a risk level, and a short plain-English reason — always backed by sources.</p>
+        </div>
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:18px;padding:20px;box-shadow:var(--shadowlg)">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start">
+            <div>
+              <div style="font-weight:700;font-size:16px;color:var(--text)">John Keells Holdings</div>
+              <div style="font-size:12.5px;color:var(--muted)">JKH.N0000 · Diversified Holdings</div>
+            </div>
+            <span style="background:rgba(22,163,74,.12);color:var(--green);font-weight:600;font-size:12.5px;padding:5px 11px;border-radius:999px">▲ Positive</span>
+          </div>
+          <div style="display:flex;gap:10px;margin:16px 0">
+            <span style="background:rgba(37,99,235,.1);color:var(--blue);font-size:12px;font-weight:600;padding:5px 11px;border-radius:999px">Confidence 82%</span>
+            <span style="background:rgba(245,158,11,.14);color:var(--amber);font-size:12px;font-weight:600;padding:5px 11px;border-radius:999px">Medium risk</span>
+          </div>
+          <div style="font-size:13.5px;color:var(--muted);line-height:1.55;background:var(--soft);padding:12px;border-radius:12px">Tourism-related news may support leisure sector revenue. Possible upward movement in the coming days.</div>
+        </div>
+      </div>
+    </section>
+
+    <section style="padding:40px 0">
+      <div style="background:var(--navy);border-radius:20px;padding:40px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px">
+        <div>
+          <h2 style="color:#fff;font-size:24px;font-weight:700;margin:0">Get your AI market summary every morning.</h2>
+          <p style="color:#cbd5e1;font-size:14.5px;margin:8px 0 0">A simple brief of top signals, affected sectors, and watchlist updates.</p>
+        </div>
+        <button onClick="{{ goRegister }}" style="padding:13px 26px;border-radius:11px;border:none;background:var(--blue);color:#fff;font-weight:600;font-size:15px;cursor:pointer">Subscribe Daily Summary</button>
+      </div>
+    </section>
+
+    <section style="padding:24px 0 40px">
+      <div style="background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.3);border-radius:14px;padding:16px 18px;display:flex;gap:12px;align-items:center">
+        <span style="color:var(--amber);font-size:18px">⚠</span>
+        <span style="font-size:13.5px;color:var(--text)">StockSense provides AI-powered decision support only. It is not financial advice.</span>
+      </div>
+    </section>
+
+    <footer style="border-top:1px solid var(--border);padding:28px 0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">
+      <div style="display:flex;align-items:center;gap:10px">{{ logo }}</div>
+      <div style="font-size:13px;color:var(--muted)">stocksense.lk · © 2026 StockSense. Not financial advice.</div>
+    </footer>
+  </div>
+  </sc-if>
+
+  <!-- ============ AUTH ============ -->
+  <sc-if value="{{ isAuth }}" hint-placeholder-val="{{ true }}">
+  <div style="min-height:100vh;display:grid;grid-template-columns:1fr;place-items:center;padding:24px">
+    <div style="width:100%;max-width:420px">
+      <div style="display:flex;justify-content:center;margin-bottom:24px;cursor:pointer" onClick="{{ goLanding }}">{{ logo }}</div>
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:18px;box-shadow:var(--shadowlg);padding:28px">
+        <h1 style="font-size:22px;font-weight:700;margin:0 0 4px;color:var(--text)">{{ authTitle }}</h1>
+        <p style="font-size:13.5px;color:var(--muted);margin:0 0 20px">{{ authSub }}</p>
+
+        <sc-if value="{{ isRegister }}" hint-placeholder-val="{{ true }}">
+          <label style="font-size:13px;font-weight:600;color:var(--text)">Full name</label>
+          <input placeholder="Nimal Perera" style="width:100%;margin:6px 0 14px;padding:11px 13px;border-radius:10px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:14px"/>
+        </sc-if>
+        <label style="font-size:13px;font-weight:600;color:var(--text)">Email</label>
+        <input placeholder="you@email.com" style="width:100%;margin:6px 0 14px;padding:11px 13px;border-radius:10px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:14px"/>
+        <label style="font-size:13px;font-weight:600;color:var(--text)">Password</label>
+        <input type="password" placeholder="••••••••" style="width:100%;margin:6px 0 14px;padding:11px 13px;border-radius:10px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:14px"/>
+        <sc-if value="{{ isRegister }}" hint-placeholder-val="{{ true }}">
+          <label style="font-size:13px;font-weight:600;color:var(--text)">Confirm password</label>
+          <input type="password" placeholder="••••••••" style="width:100%;margin:6px 0 14px;padding:11px 13px;border-radius:10px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:14px"/>
+        </sc-if>
+
+        <sc-if value="{{ isLoginMode }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+            <label style="font-size:13px;color:var(--muted);display:flex;gap:7px;align-items:center"><input type="checkbox"/> Remember me</label>
+            <span style="font-size:13px;color:var(--blue);font-weight:500;cursor:pointer">Forgot password?</span>
+          </div>
+        </sc-if>
+
+        <button onClick="{{ onAuthSubmit }}" style="width:100%;padding:12px;border-radius:11px;border:none;background:var(--blue);color:#fff;font-weight:600;font-size:15px;cursor:pointer;margin-top:6px">{{ authCta }}</button>
+
+        <div style="text-align:center;font-size:13.5px;color:var(--muted);margin-top:18px">
+          {{ authSwitchText }} <span onClick="{{ toggleAuth }}" style="color:var(--blue);font-weight:600;cursor:pointer">{{ authSwitchLink }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- ============ ONBOARDING ============ -->
+  <sc-if value="{{ isOnboarding }}" hint-placeholder-val="{{ true }}">
+  <div style="min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:32px 20px">
+    <div style="width:100%;max-width:760px">
+      <div style="display:flex;justify-content:center;margin-bottom:20px">{{ logo }}</div>
+      <div style="display:flex;gap:8px;margin-bottom:8px">
+        <sc-for list="{{ onbBars }}" as="b" hint-placeholder-count="4">
+          <div style="height:6px;flex:1;border-radius:999px;background:{{ b.color }}"></div>
+        </sc-for>
+      </div>
+      <div style="font-size:12.5px;color:var(--muted);margin-bottom:18px">Step {{ onbStep }} of 4</div>
+
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:18px;box-shadow:var(--shadow);padding:26px;min-height:380px">
+        <h2 style="font-size:21px;font-weight:700;margin:0 0 4px;color:var(--text)">{{ onbTitle }}</h2>
+        <p style="font-size:13.5px;color:var(--muted);margin:0 0 20px">{{ onbSub }}</p>
+
+        <sc-if value="{{ onbIsStep1 }}" hint-placeholder-val="{{ true }}">
+          <div class="ss-cols-2" style="gap:10px">
+            <sc-for list="{{ onbCompanies }}" as="c" hint-placeholder-count="10">
+              <div onClick="{{ c.toggle }}" style="display:flex;justify-content:space-between;align-items:center;padding:13px 15px;border-radius:12px;border:1.5px solid {{ c.borderColor }};background:{{ c.bgColor }};cursor:pointer">
+                <div><div style="font-weight:600;font-size:14px;color:var(--text)">{{ c.name }}</div><div style="font-size:12px;color:var(--muted)">{{ c.symbol }}</div></div>
+                <span style="font-size:16px;color:{{ c.tickColor }}">{{ c.tick }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ onbIsStep2 }}" hint-placeholder-val="{{ true }}">
+          <div class="ss-cols-2" style="gap:10px">
+            <sc-for list="{{ onbSectors }}" as="s" hint-placeholder-count="8">
+              <div onClick="{{ s.toggle }}" style="display:flex;justify-content:space-between;align-items:center;padding:13px 15px;border-radius:12px;border:1.5px solid {{ s.borderColor }};background:{{ s.bgColor }};cursor:pointer">
+                <span style="font-weight:600;font-size:14px;color:var(--text)">{{ s.name }}</span>
+                <span style="font-size:16px;color:{{ s.tickColor }}">{{ s.tick }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ onbIsStep3 }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <sc-for list="{{ onbAlerts }}" as="a" hint-placeholder-count="6">
+              <div onClick="{{ a.toggle }}" style="display:flex;gap:12px;align-items:center;padding:14px 16px;border-radius:12px;border:1.5px solid {{ a.borderColor }};background:{{ a.bgColor }};cursor:pointer">
+                <span style="width:20px;height:20px;border-radius:6px;border:1.5px solid {{ a.tickColor }};display:flex;align-items:center;justify-content:center;color:#fff;background:{{ a.boxBg }};font-size:13px">{{ a.tick }}</span>
+                <span style="font-weight:500;font-size:14px;color:var(--text)">{{ a.name }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ onbIsStep4 }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <sc-for list="{{ onbDelivery }}" as="d" hint-placeholder-count="3">
+              <div onClick="{{ d.toggle }}" style="display:flex;justify-content:space-between;align-items:center;padding:15px 16px;border-radius:12px;border:1.5px solid {{ d.borderColor }};background:{{ d.bgColor }};cursor:{{ d.cursor }}">
+                <div style="display:flex;gap:12px;align-items:center">
+                  <span style="font-size:18px">{{ d.icon }}</span>
+                  <span style="font-weight:600;font-size:14px;color:var(--text)">{{ d.name }}</span>
+                </div>
+                <span style="font-size:12px;font-weight:600;color:{{ d.tagColor }}">{{ d.tag }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+
+        <div style="display:flex;justify-content:space-between;margin-top:26px">
+          <button onClick="{{ onbBack }}" style="padding:11px 20px;border-radius:10px;border:1px solid var(--border);background:var(--card);color:var(--navy);font-weight:600;font-size:14px;cursor:pointer;visibility:{{ onbBackVis }}">Back</button>
+          <button onClick="{{ onbNext }}" style="padding:11px 24px;border-radius:10px;border:none;background:var(--blue);color:#fff;font-weight:600;font-size:14px;cursor:pointer">{{ onbNextLabel }}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- ============ APP SHELL ============ -->
+  <sc-if value="{{ isApp }}" hint-placeholder-val="{{ true }}">
+  <div class="ss-shell">
+    <!-- sidebar -->
+    <aside class="ss-sidebar" style="background:var(--navy);display:flex;flex-direction:column;padding:18px 14px;position:sticky;top:0;height:100vh">
+      <div style="padding:6px 8px 18px">{{ logoLight }}</div>
+      <nav style="display:flex;flex-direction:column;gap:3px;flex:1">
+        <sc-for list="{{ navItems }}" as="n" hint-placeholder-count="10">
+          <div onClick="{{ n.onClick }}" style="{{ n.style }}">
+            <span style="display:flex;width:18px;height:18px">{{ n.icon }}</span>
+            <span>{{ n.label }}</span>
+          </div>
+        </sc-for>
+      </nav>
+      <div style="background:rgba(37,99,235,.14);border:1px solid rgba(59,130,246,.3);border-radius:12px;padding:14px;margin-top:10px">
+        <div style="font-size:12.5px;font-weight:600;color:#fff">Daily Summary</div>
+        <div style="font-size:11.5px;color:#94a3b8;margin:4px 0 10px">Get a morning AI brief.</div>
+        <button onClick="{{ goSummary }}" style="width:100%;padding:8px;border-radius:8px;border:none;background:var(--blue);color:#fff;font-size:12.5px;font-weight:600;cursor:pointer">Subscribe</button>
+      </div>
+    </aside>
+
+    <!-- main -->
+    <div class="ss-main" style="display:flex;flex-direction:column;min-width:0">
+      <!-- topbar -->
+      <header style="position:sticky;top:0;z-index:20;background:var(--card);border-bottom:1px solid var(--border);padding:12px 22px;display:flex;align-items:center;gap:16px">
+        <div style="flex:1;max-width:440px;display:flex;align-items:center;gap:9px;background:var(--bg);border:1px solid var(--border);border-radius:11px;padding:9px 13px">
+          <span style="color:var(--muted)">{{ iconSearch }}</span>
+          <input placeholder="Search companies, news, or sectors" style="border:none;background:transparent;outline:none;font-size:13.5px;color:var(--text);width:100%"/>
+        </div>
+        <div style="flex:1"></div>
+        <button onClick="{{ goNotifications }}" style="position:relative;width:40px;height:40px;border-radius:11px;border:1px solid var(--border);background:var(--card);color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center">
+          {{ iconBell }}
+          <span style="position:absolute;top:7px;right:8px;width:8px;height:8px;border-radius:50%;background:var(--red)"></span>
+        </button>
+        <button onClick="{{ toggleTheme }}" style="width:40px;height:40px;border-radius:11px;border:1px solid var(--border);background:var(--card);color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center">{{ themeIcon }}</button>
+        <div onClick="{{ goSettings }}" style="display:flex;align-items:center;gap:9px;cursor:pointer;padding:4px 6px 4px 4px;border-radius:999px;border:1px solid var(--border)">
+          <span style="width:32px;height:32px;border-radius:50%;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600">NP</span>
+          <span class="ss-hideMobile" style="font-size:13px;font-weight:600;color:var(--text);padding-right:6px">Nimal</span>
+        </div>
+      </header>
+
+      <main style="padding:24px 22px;max-width:1200px;width:100%;margin:0 auto;flex:1">
+
+        <!-- ===== DASHBOARD ===== -->
+        <sc-if value="{{ isDashboard }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:12px;margin-bottom:20px">
+            <div>
+              <h1 style="font-size:27px;font-weight:800;letter-spacing:-.02em;margin:0;color:var(--text)">Good morning, Nimal</h1>
+              <p style="font-size:14px;color:var(--muted);margin:5px 0 0">Here is what AI found in the market today.</p>
+            </div>
+          </div>
+
+          <!-- A. Market Brief -->
+          <div style="background:var(--navy);border-radius:18px;padding:24px;margin-bottom:20px;position:relative;overflow:hidden">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap">
+              <div style="max-width:640px">
+                <div style="display:flex;align-items:center;gap:9px;margin-bottom:10px">
+                  <span style="width:30px;height:30px;border-radius:9px;background:rgba(59,130,246,.22);display:flex;align-items:center;justify-content:center;color:#60a5fa">{{ iconSparkLight }}</span>
+                  <span style="font-size:15px;font-weight:700;color:#fff">Today's AI Market Brief</span>
+                </div>
+                <div style="font-size:20px;font-weight:700;color:#fff;margin-bottom:8px">Market mood: <span style="color:#fbbf24">Mixed</span></div>
+                <p style="font-size:14px;line-height:1.6;color:#cbd5e1;margin:0">Tourism-related companies show positive signals. The banking sector has mixed news impact. 2 companies in your watchlist have high-impact news today.</p>
+                <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:16px">
+                  <sc-for list="{{ briefBadges }}" as="b" hint-placeholder-count="4">
+                    <span style="{{ b.style }}">{{ b.text }}</span>
+                  </sc-for>
+                </div>
+              </div>
+              <button onClick="{{ goSummary }}" style="padding:10px 18px;border-radius:10px;border:none;background:var(--blue);color:#fff;font-weight:600;font-size:13.5px;cursor:pointer;white-space:nowrap">View Daily Summary</button>
+            </div>
+          </div>
+
+          <!-- B. Metric cards -->
+          <div class="ss-cols-4" style="margin-bottom:20px">
+            <sc-for list="{{ metrics }}" as="m" hint-placeholder-count="4">
+              <div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px;box-shadow:var(--shadow)">
+                <div style="display:flex;justify-content:space-between;align-items:center">
+                  <span style="font-size:12.5px;color:var(--muted);font-weight:500">{{ m.label }}</span>
+                  <span style="width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;color:{{ m.c }};background:{{ m.iconBg }}">{{ m.icon }}</span>
+                </div>
+                <div style="font-size:30px;font-weight:800;color:var(--text);margin-top:10px;letter-spacing:-.02em">{{ m.value }}</div>
+              </div>
+            </sc-for>
+          </div>
+
+          <!-- C/D signals -->
+          <div class="ss-cols-2" style="margin-bottom:20px;align-items:start">
+            <div>
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+                <span style="font-size:16px;font-weight:700;color:var(--text)">Top Positive Signals</span>
+                <span style="font-size:13px">🟢</span>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:12px">
+                <sc-for list="{{ topPositive }}" as="c" hint-placeholder-count="3">
+                  <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;box-shadow:var(--shadow)">
+                    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px">
+                      <div style="min-width:0"><div style="font-weight:700;font-size:14.5px;color:var(--text)">{{ c.name }}</div><div style="font-size:12px;color:var(--muted)">{{ c.symbolFull }} · {{ c.sector }}</div></div>
+                      <span style="white-space:nowrap;font-size:12px;font-weight:600;padding:5px 10px;border-radius:999px;color:{{ c.sigFg }};background:{{ c.sigBg }}">{{ c.sigArrow }} {{ c.sigLabel }}</span>
+                    </div>
+                    <div style="display:flex;gap:8px;margin:12px 0">
+                      <span style="font-size:11.5px;font-weight:600;padding:4px 9px;border-radius:999px;color:{{ c.confFg }};background:{{ c.confBg }}">{{ c.confText }}</span>
+                      <span style="font-size:11.5px;font-weight:600;padding:4px 9px;border-radius:999px;color:{{ c.riskFg }};background:{{ c.riskBg }}">{{ c.riskLabel }}</span>
+                    </div>
+                    <p style="font-size:13px;color:var(--muted);line-height:1.5;margin:0 0 12px">{{ c.reason }}</p>
+                    <div style="display:flex;gap:8px">
+                      <button onClick="{{ c.onView }}" style="flex:1;padding:8px;border-radius:9px;border:1px solid var(--border);background:var(--card);color:var(--navy);font-weight:600;font-size:12.5px;cursor:pointer">View Analysis</button>
+                      <button onClick="{{ c.onAsk }}" style="flex:1;padding:8px;border-radius:9px;border:none;background:var(--blue);color:#fff;font-weight:600;font-size:12.5px;cursor:pointer">Ask AI</button>
+                    </div>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+            <div>
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+                <span style="font-size:16px;font-weight:700;color:var(--text)">Top Negative Signals</span>
+                <span style="font-size:13px">🔴</span>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:12px">
+                <sc-for list="{{ topNegative }}" as="c" hint-placeholder-count="2">
+                  <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;box-shadow:var(--shadow)">
+                    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px">
+                      <div style="min-width:0"><div style="font-weight:700;font-size:14.5px;color:var(--text)">{{ c.name }}</div><div style="font-size:12px;color:var(--muted)">{{ c.symbolFull }} · {{ c.sector }}</div></div>
+                      <span style="white-space:nowrap;font-size:12px;font-weight:600;padding:5px 10px;border-radius:999px;color:{{ c.sigFg }};background:{{ c.sigBg }}">{{ c.sigArrow }} {{ c.sigLabel }}</span>
+                    </div>
+                    <div style="display:flex;gap:8px;margin:12px 0">
+                      <span style="font-size:11.5px;font-weight:600;padding:4px 9px;border-radius:999px;color:{{ c.confFg }};background:{{ c.confBg }}">{{ c.confText }}</span>
+                      <span style="font-size:11.5px;font-weight:600;padding:4px 9px;border-radius:999px;color:{{ c.riskFg }};background:{{ c.riskBg }}">{{ c.riskLabel }}</span>
+                    </div>
+                    <p style="font-size:13px;color:var(--muted);line-height:1.5;margin:0 0 12px">{{ c.reason }}</p>
+                    <div style="display:flex;gap:8px">
+                      <button onClick="{{ c.onView }}" style="flex:1;padding:8px;border-radius:9px;border:1px solid var(--border);background:var(--card);color:var(--navy);font-weight:600;font-size:12.5px;cursor:pointer">View Analysis</button>
+                      <button onClick="{{ c.onAsk }}" style="flex:1;padding:8px;border-radius:9px;border:none;background:var(--blue);color:#fff;font-weight:600;font-size:12.5px;cursor:pointer">Ask AI</button>
+                    </div>
+                  </div>
+                </sc-for>
+                <!-- E. Watchlist alerts -->
+                <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;box-shadow:var(--shadow)">
+                  <div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:10px">Watchlist Alerts</div>
+                  <div style="display:flex;flex-direction:column;gap:8px">
+                    <sc-for list="{{ watchAlertCards }}" as="a" hint-placeholder-count="2">
+                      <div onClick="{{ a.onView }}" style="display:flex;gap:10px;align-items:center;padding:10px;border-radius:10px;background:var(--soft);cursor:pointer">
+                        <span style="width:8px;height:8px;border-radius:50%;background:{{ a.sigFg }};flex:none"></span>
+                        <span style="flex:1;font-size:12.5px;color:var(--text);line-height:1.4">{{ a.title }}</span>
+                        <span style="font-size:11px;color:var(--muted);white-space:nowrap">{{ a.time }}</span>
+                      </div>
+                    </sc-for>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- F. Latest news -->
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+            <span style="font-size:16px;font-weight:700;color:var(--text)">Latest News</span>
+            <button onClick="{{ goNewsPage }}" style="font-size:13px;font-weight:600;color:var(--blue);background:none;border:none;cursor:pointer">View all</button>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px">
+            <sc-for list="{{ dashNews }}" as="n" hint-placeholder-count="5">
+              <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;box-shadow:var(--shadow);display:flex;gap:14px;align-items:flex-start;flex-wrap:wrap">
+                <div style="flex:1;min-width:200px">
+                  <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px">
+                    <span style="font-size:11.5px;font-weight:600;padding:3px 9px;border-radius:999px;color:{{ n.sigFg }};background:{{ n.sigBg }}">{{ n.sigArrow }} {{ n.sigLabel }}</span>
+                    <span style="font-size:11.5px;color:var(--muted)">{{ n.source }} · {{ n.time }}</span>
+                  </div>
+                  <div style="font-weight:700;font-size:14.5px;color:var(--text);margin-bottom:4px">{{ n.title }}</div>
+                  <div style="font-size:12.5px;color:var(--muted);line-height:1.5">{{ n.summary }}</div>
+                </div>
+                <button onClick="{{ n.onView }}" style="padding:8px 14px;border-radius:9px;border:1px solid var(--border);background:var(--card);color:var(--navy);font-weight:600;font-size:12.5px;cursor:pointer;white-space:nowrap">View Analysis</button>
+              </div>
+            </sc-for>
+          </div>
+
+          <!-- G. Daily summary signup -->
+          <div style="background:linear-gradient(100deg,var(--card),var(--soft));border:1px solid var(--border);border-radius:16px;padding:22px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;box-shadow:var(--shadow)">
+            <div>
+              <div style="font-size:16px;font-weight:700;color:var(--text)">Get your AI market summary every morning.</div>
+              <div style="font-size:13.5px;color:var(--muted);margin-top:4px">Top signals, affected sectors, and watchlist updates in one simple brief.</div>
+            </div>
+            <div style="display:flex;gap:10px">
+              <button onClick="{{ goSummary }}" style="padding:10px 18px;border-radius:10px;border:none;background:var(--blue);color:#fff;font-weight:600;font-size:13.5px;cursor:pointer">Subscribe Daily Summary</button>
+              <button onClick="{{ goSummary }}" style="padding:10px 18px;border-radius:10px;border:1px solid var(--border);background:var(--card);color:var(--navy);font-weight:600;font-size:13.5px;cursor:pointer">Manage Preferences</button>
+            </div>
+          </div>
+
+          <div style="background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.3);border-radius:12px;padding:13px 16px;margin-top:18px;font-size:12.5px;color:var(--muted)">⚠ StockSense provides AI-powered decision support only. It is not financial advice.</div>
+        </sc-if>
+
+        <!-- ===== OTHER SCREENS (placeholder) ===== -->
+        <sc-if value="{{ isOtherScreen }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 20px;text-align:center">
+            <div style="width:56px;height:56px;border-radius:16px;background:var(--soft);display:flex;align-items:center;justify-content:center;color:var(--blue);margin-bottom:16px">{{ iconSparkLight }}</div>
+            <h2 style="font-size:20px;font-weight:700;color:var(--text);margin:0">{{ otherScreenTitle }}</h2>
+            <p style="font-size:14px;color:var(--muted);margin:8px 0 0;max-width:380px">This screen is part of the StockSense app. The Dashboard is fully built — open it from the sidebar.</p>
+            <button onClick="{{ goDashboard }}" style="margin-top:18px;padding:10px 20px;border-radius:10px;border:none;background:var(--blue);color:#fff;font-weight:600;font-size:13.5px;cursor:pointer">Back to Dashboard</button>
+          </div>
+        </sc-if>
+
+      </main>
+    </div>
+
+    <!-- mobile bottom nav -->
+    <nav class="ss-bottomnav" style="position:fixed;bottom:0;left:0;right:0;z-index:40;background:var(--card);border-top:1px solid var(--border);padding:8px 6px;justify-content:space-around">
+      <sc-for list="{{ mobileNav }}" as="m" hint-placeholder-count="5">
+        <div onClick="{{ m.onClick }}" style="display:flex;flex-direction:column;align-items:center;gap:3px;padding:4px 10px;cursor:pointer;color:{{ m.color }}">
+          <span style="width:20px;height:20px">{{ m.icon }}</span>
+          <span style="font-size:10.5px;font-weight:600">{{ m.label }}</span>
+        </div>
+      </sc-for>
+    </nav>
+  </div>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280,&quot;height&quot;:860}}">
+class Component extends DCLogic {
+  state = {
+    route: 'landing', theme: 'light', authMode: 'login', onbStep: 1,
+    onbCompanies: ['JKH','COMB','DIAL','SPEN'], onbSectors: ['Tourism','Banking'],
+    onbAlerts: ['High impact news','Strong positive signals','Daily market summary'],
+    onbDelivery: ['Email','In-app notification'],
+    watch: ['JKH','COMB','DIAL','LOLC'],
+    watchFilter: 'All', newsFilter: 'Latest', companyFilter: 'All',
+    alertTab: 'All', selSymbol: 'JKH', selNews: 1, range: '3M',
+    chat: [], chatInput: '', summaryWhen: 'Every morning', summaryType: 'Full CSE market summary',
+  };
+
+  // ---------- helpers ----------
+  rgba(hex, a){ const n=parseInt(hex.slice(1),16); return `rgba(${(n>>16)&255},${(n>>8)&255},${n&255},${a})`; }
+  pal(){ const d=this.state.theme==='dark'; return {
+    green:d?'#22C55E':'#16A34A', red:d?'#EF4444':'#DC2626', amber:'#F59E0B',
+    blue:d?'#3B82F6':'#2563EB', gray:d?'#94A3B8':'#64748B', navy:'#0F172A'};
+  }
+  icon(paths, extra){ const P=this.pal(); return React.createElement('svg',Object.assign({width:18,height:18,viewBox:'0 0 24 24',fill:'none',stroke:'currentColor',strokeWidth:2,strokeLinecap:'round',strokeLinejoin:'round'},extra||{}), paths.map((d,i)=>{ if(Array.isArray(d)) return React.createElement(d[0],Object.assign({key:i},d[1])); return React.createElement('path',{key:i,d}); })); }
+  ic(name){ const I={
+    dashboard:[['rect',{x:3,y:3,width:7,height:9,rx:1}],['rect',{x:14,y:3,width:7,height:5,rx:1}],['rect',{x:14,y:12,width:7,height:9,rx:1}],['rect',{x:3,y:16,width:7,height:5,rx:1}]],
+    watch:[['path',{d:'M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z'}],['circle',{cx:12,cy:12,r:3}]],
+    news:['M4 4h16v16H4z','M8 8h8','M8 12h8','M8 16h5'],
+    company:[['rect',{x:4,y:3,width:16,height:18,rx:1}],['path',{d:'M9 8h2M13 8h2M9 12h2M13 12h2M9 16h6'}]],
+    chat:['M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z'],
+    alerts:['M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9','M13.7 21a2 2 0 0 1-3.4 0'],
+    summary:['M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z','M14 2v6h6','M8 13h8M8 17h5'],
+    portfolio:[['path',{d:'M3 3v18h18'}],['path',{d:'M7 14l4-4 3 3 5-6'}]],
+    settings:[['circle',{cx:12,cy:12,r:3}],['path',{d:'M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-2.92 1.18 2 2 0 0 1-4 0 1.65 1.65 0 0 0-2.92-1.18l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.6-1.18H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9c.36.16.62.52.66.92'}]],
+    home:[['path',{d:'M3 9.5 12 3l9 6.5V21H3z'}],['path',{d:'M9 21v-7h6v7'}]],
+    search:[['circle',{cx:11,cy:11,r:7}],['path',{d:'m21 21-4.3-4.3'}]],
+    bell:['M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9','M13.7 21a2 2 0 0 1-3.4 0'],
+    sun:[['circle',{cx:12,cy:12,r:4}],['path',{d:'M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4'}]],
+    moon:['M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z'],
+    plus:['M12 5v14M5 12h14'], spark:[['path',{d:'M3 13l5-5 4 4 8-8'}],['path',{d:'M17 4h4v4'}]],
+    shield:['M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z'], target:[['circle',{cx:12,cy:12,r:9}],['circle',{cx:12,cy:12,r:5}],['circle',{cx:12,cy:12,r:1}]],
+  }; return this.ic_build(I[name]); }
+  ic_build(arr){ return this.icon(arr); }
+
+  // ---------- data ----------
+  companies(){ return [
+    {sym:'JKH',name:'John Keells Holdings PLC',sector:'Diversified Holdings',price:184.50,chg:1.2,sig:'positive',conf:82,risk:'Medium',reason:'Tourism-related news may support leisure sector revenue.',newsLine:'Tourism arrivals increased in May'},
+    {sym:'COMB',name:'Commercial Bank of Ceylon PLC',sector:'Banking',price:102.75,chg:-0.8,sig:'negative',conf:71,risk:'Medium',reason:'Banking sector faces margin pressure in current rate environment.',newsLine:'Central Bank keeps policy rates unchanged'},
+    {sym:'HNB',name:'Hatton National Bank PLC',sector:'Banking',price:188.00,chg:0.3,sig:'neutral',conf:60,risk:'Medium',reason:'Mixed credit growth signals, limited near-term catalyst.',newsLine:'Banking sector credit growth improves'},
+    {sym:'LOLC',name:'LOLC Holdings PLC',sector:'Diversified Holdings',price:412.25,chg:-1.9,sig:'strong-negative',conf:79,risk:'High',reason:'Interest rate concerns may pressure financing margins.',newsLine:'Interest rate concerns weigh on non-bank lenders'},
+    {sym:'DIAL',name:'Dialog Axiata PLC',sector:'Telecommunication',price:11.80,chg:0.9,sig:'positive',conf:74,risk:'Low',reason:'Data demand growth supports a steady revenue outlook.',newsLine:'Data usage continues to grow nationwide'},
+    {sym:'CTC',name:'Ceylon Tobacco Company PLC',sector:'Manufacturing',price:1180.00,chg:0.5,sig:'positive',conf:68,risk:'Low',reason:'Stable pricing power supports earnings resilience.',newsLine:'Stable consumer demand reported'},
+    {sym:'SAMP',name:'Sampath Bank PLC',sector:'Banking',price:78.40,chg:0.4,sig:'neutral',conf:58,risk:'Medium',reason:'Awaiting sector credit data for clearer direction.',newsLine:'Central Bank keeps policy rates unchanged'},
+    {sym:'DIST',name:'Distilleries Company of Sri Lanka PLC',sector:'Food & Beverage',price:24.60,chg:1.5,sig:'positive',conf:70,risk:'Low',reason:'Resilient domestic demand supports beverage volumes.',newsLine:'New import policy affects consumer goods sector'},
+    {sym:'SPEN',name:'Aitken Spence PLC',sector:'Tourism',price:98.25,chg:2.1,sig:'strong-positive',conf:84,risk:'Medium',reason:'Tourism arrivals momentum supports leisure earnings.',newsLine:'Tourism arrivals increase in May'},
+    {sym:'HAYL',name:'Hayleys PLC',sector:'Diversified Holdings',price:92.10,chg:-0.6,sig:'negative',conf:64,risk:'Medium',reason:'Export demand softness may weigh on segment revenue.',newsLine:'Fuel price adjustment announced'},
+  ]; }
+  newsData(){ return [
+    {id:1,title:'Tourism arrivals increase in May',source:'Daily FT',time:'2 hours ago',sector:'Tourism',sig:'positive',mag:'High',conf:82,summary:'Higher monthly arrivals may positively affect tourism and hotel-related companies.',affected:[['JKH','positive',82],['SPEN','positive',84]]},
+    {id:2,title:'Central Bank keeps policy rates unchanged',source:'EconomyNext',time:'4 hours ago',sector:'Banking',sig:'neutral',mag:'Medium',conf:60,summary:'Stable rates offer a neutral-to-mixed backdrop for the banking sector.',affected:[['COMB','neutral',60],['HNB','neutral',58],['SAMP','neutral',57]]},
+    {id:3,title:'Fuel price adjustment announced',source:'Daily Mirror',time:'6 hours ago',sector:'Energy',sig:'negative',mag:'Medium',conf:66,summary:'Higher fuel costs may pressure transport and logistics-exposed sectors.',affected:[['SPEN','negative',66],['HAYL','negative',62]]},
+    {id:4,title:'Banking sector credit growth improves',source:'Daily FT',time:'8 hours ago',sector:'Banking',sig:'positive',mag:'Medium',conf:70,summary:'Improving credit growth is a mild positive for lenders.',affected:[['COMB','positive',70],['SAMP','positive',67]]},
+    {id:5,title:'New import policy affects consumer goods sector',source:'EconomyNext',time:'11 hours ago',sector:'Food & Beverage',sig:'negative',mag:'Medium',conf:61,summary:'Policy change could raise input costs for import-reliant goods.',affected:[['DIST','negative',61]]},
+    {id:6,title:'Interest rate concerns weigh on non-bank lenders',source:'LBO',time:'1 day ago',sector:'Diversified Holdings',sig:'negative',mag:'High',conf:79,summary:'Rate worries may pressure financing-heavy diversified holdings.',affected:[['LOLC','negative',79]]},
+  ]; }
+
+  newsEnrich(n){ const sm=this.sigMeta(n.sig);
+    const affected=n.affected.map(([sym,sig,conf])=>{ const am=this.sigMeta(sig);
+      return {sym, sig, conf, label:sym+' · '+am.label+' · '+conf+'%', fg:am.fg, bg:am.bg, arrow:am.arrow}; });
+    return Object.assign({},n,{ sigLabel:sm.label, sigArrow:sm.arrow, sigFg:sm.fg, sigBg:sm.bg,
+      magLabel:n.mag+' impact', confText:'Confidence '+n.conf+'%', affected,
+      onView:()=>this.openNews(n.id), onAsk:()=>this.askAbout(n.affected[0][0]), onAlert:()=>this.go('alertSettings') }); }
+
+  chatEnrich(m,i){
+    if(m.role==='user') return {role:'user', text:m.text, isUser:true, isAi:false, key:'m'+i};
+    const sm=m.sig?this.sigMeta(m.sig):null, rm=m.risk?this.riskMeta(m.risk):null;
+    return {role:'ai', text:m.text, isUser:false, isAi:true, key:'m'+i,
+      hasChips:!!m.sig, sigLabel:sm?sm.label:'', sigFg:sm?sm.fg:'', sigBg:sm?sm.bg:'',
+      conf:m.conf, confText:'Confidence '+(m.conf||0)+'%', riskLabel:rm?(m.risk+' risk'):'', riskFg:rm?rm.fg:'', riskBg:rm?rm.bg:'',
+      sources:(m.sources||[]).map((s,j)=>({n:j+1,text:s})), sym:m.sym,
+      onView:()=>this.openCompany(m.sym||'JKH'), onWatch:()=>this.toggleWatch(m.sym||'JKH') }; }
+
+  chartData(co){
+    // deterministic pseudo-series seeded by symbol
+    let seed=0; for(const ch of co.sym) seed+=ch.charCodeAt(0);
+    const rand=()=>{ seed=(seed*9301+49297)%233280; return seed/233280; };
+    const n=40, base=co.price/(1+co.chg/100*4); const pts=[]; let p=base;
+    let min=Infinity,max=-Infinity,vmax=0;
+    for(let i=0;i<n;i++){ const drift=(co.chg/100)*base*(i/n)*0.9; p=base+drift+(rand()-0.5)*base*0.04;
+      const vol=0.6+rand()*0.9; const close=Math.max(base*0.85,p);
+      pts.push({i,close,vol}); min=Math.min(min,close); max=Math.max(max,close); vmax=Math.max(vmax,vol); }
+    pts[n-1].close=co.price;
+    const W=720,H=220,pad=8;
+    const sx=i=>pad+(i/(n-1))*(W-pad*2);
+    const sy=v=>{ const r=(v-min)/((max-min)||1); return pad+(1-r)*(H-pad*2); };
+    const line=pts.map((pt,i)=>(i?'L':'M')+sx(i).toFixed(1)+' '+sy(pt.close).toFixed(1)).join(' ');
+    const area=line+' L'+sx(n-1).toFixed(1)+' '+(H-pad)+' L'+sx(0).toFixed(1)+' '+(H-pad)+' Z';
+    const VH=60;
+    const bars=pts.map((pt,i)=>({x:sx(i)-4, w:8, h:(pt.vol/vmax)*(VH-6), y:VH-(pt.vol/vmax)*(VH-6)}));
+    const markerIdx=[12,24,33];
+    const markerNews=[
+      {title:'Tourism arrivals increased in May',sig:'positive',conf:82,reason:'Tourism growth may support leisure sector earnings.',id:1},
+      {title:'Central Bank keeps policy rates unchanged',sig:'neutral',conf:60,reason:'Stable rates give a neutral backdrop.',id:2},
+      {title:'Banking sector credit growth improves',sig:'positive',conf:70,reason:'Improving credit growth is a mild positive.',id:4},
+    ];
+    const markers=markerIdx.map((mi,k)=>{ const sm=this.sigMeta(markerNews[k].sig);
+      return {cx:sx(mi),cy:sy(pts[mi].close),color:sm.fg, idx:k,
+        onClick:()=>this.setState(s=>({selMarker:s.selMarker===k?null:k})),
+        news:Object.assign({},markerNews[k],{fg:sm.fg,bg:sm.bg,label:sm.label,
+          onView:()=>this.openNews(markerNews[k].id), onAsk:()=>this.askAbout(co.sym)})}; });
+    const up=co.sig.indexOf('negative')<0;
+    return {W,H,VH,line,area, lineColor:up?this.pal().green:this.pal().red,
+      areaFill:this.rgba(up?this.pal().green:this.pal().red, this.state.theme==='dark'?0.14:0.09),
+      bars, markers, lo:'Rs. '+min.toFixed(0), hi:'Rs. '+max.toFixed(0)}; }
+
+  // ---------- meta ----------
+  sigMeta(s){ const P=this.pal(); const m={
+    'positive':{label:'Positive',c:P.green,a:'▲'}, 'strong-positive':{label:'Strong Positive',c:P.green,a:'▲▲'},
+    'negative':{label:'Negative',c:P.red,a:'▼'}, 'strong-negative':{label:'Strong Negative',c:P.red,a:'▼▼'},
+    'neutral':{label:'Neutral',c:P.gray,a:'■'}}[s]||{label:'Neutral',c:P.gray,a:'■'};
+    return {label:m.label, arrow:m.a, fg:m.c, bg:this.rgba(m.c, this.state.theme==='dark'?0.18:0.12)}; }
+  riskMeta(r){ const P=this.pal(); const c=r==='High'?P.red:r==='Medium'?P.amber:P.gray; return {label:r+' risk', fg:c, bg:this.rgba(c,this.state.theme==='dark'?0.18:0.13)}; }
+  confMeta(n){ const P=this.pal(); const c=n>=75?P.blue:n<62?P.gray:P.blue; return {fg:c, bg:this.rgba(c,this.state.theme==='dark'?0.18:0.1)}; }
+  chgMeta(v){ const P=this.pal(); const c=v>0?P.green:v<0?P.red:P.gray; return {fg:c, text:(v>0?'+':'')+v.toFixed(1)+'%'}; }
+
+  enrich(c){ const sm=this.sigMeta(c.sig), rm=this.riskMeta(c.risk), cm=this.confMeta(c.conf), gm=this.chgMeta(c.chg);
+    const inW=this.state.watch.includes(c.sym);
+    return Object.assign({}, c, {
+      symbolFull:c.sym+'.N0000', priceText:'Rs. '+c.price.toFixed(2),
+      sigLabel:sm.label, sigArrow:sm.arrow, sigFg:sm.fg, sigBg:sm.bg,
+      riskLabel:rm.label, riskFg:rm.fg, riskBg:rm.bg,
+      confText:'Confidence '+c.conf+'%', confFg:cm.fg, confBg:cm.bg,
+      chgFg:gm.fg, chgText:gm.text,
+      inWatch:inW, watchLabel:inW?'In Watchlist':'Add to Watchlist',
+      watchBg:inW?this.rgba(this.pal().green,0.12):'var(--card)', watchFg:inW?this.pal().green:'var(--navy)',
+      onView:()=>this.openCompany(c.sym), onWatch:()=>this.toggleWatch(c.sym), onAsk:()=>this.askAbout(c.sym),
+    }); }
+
+  // ---------- actions ----------
+  go(r){ this.setState({route:r}); window.scrollTo&&window.scrollTo(0,0); }
+  toggleTheme(){ this.setState(s=>({theme:s.theme==='dark'?'light':'dark'})); }
+  toggleWatch(sym){ this.setState(s=>({watch:s.watch.includes(sym)?s.watch.filter(x=>x!==sym):[...s.watch,sym]})); }
+  openCompany(sym){ this.setState({selSymbol:sym,route:'company'}); window.scrollTo&&window.scrollTo(0,0); }
+  openNews(id){ this.setState({selNews:id,route:'newsDetail'}); window.scrollTo&&window.scrollTo(0,0); }
+  askAbout(sym){ this.setState(s=>({selSymbol:sym,route:'chat',chat:[...s.chat,{role:'user',text:'Why is '+sym+' showing this signal today?'},this.aiAnswer(sym)]})); }
+  aiAnswer(sym){ const c=this.companies().find(x=>x.sym===sym)||this.companies()[0]; const sm=this.sigMeta(c.sig);
+    return {role:'ai', text:c.name.split(' PLC')[0]+' has a '+sm.label.toLowerCase()+' signal mainly because '+c.reason.charAt(0).toLowerCase()+c.reason.slice(1), sig:c.sig, conf:c.conf, risk:c.risk, sym:c.sym,
+      sources:['Latest '+c.sector.toLowerCase()+' news', c.sym+' company profile', c.sector+' sector context', 'Related past event']}; }
+  sendChat(){ const t=this.state.chatInput.trim(); if(!t) return; const sym=this.state.selSymbol;
+    this.setState(s=>({chatInput:'', chat:[...s.chat,{role:'user',text:t}, this.aiAnswer(sym)]})); }
+  toggleArr(key,val){ this.setState(s=>{ const a=s[key]; return {[key]: a.includes(val)?a.filter(x=>x!==val):[...a,val]}; }); }
+
+  // ---------- onboarding helpers ----------
+  onbNext(){ if(this.state.onbStep>=4){ this.go('dashboard'); } else this.setState(s=>({onbStep:s.onbStep+1})); }
+  onbBack(){ this.setState(s=>({onbStep:Math.max(1,s.onbStep-1)})); }
+
+  renderVals(){
+    const S=this.state, P=this.pal(), dark=S.theme==='dark';
+    const r=S.route;
+    const appRoutes=['dashboard','watchlist','news','newsDetail','companies','company','chat','alerts','alertSettings','summary','portfolio','notifications','settings'];
+
+    // logo elements
+    const logoMark=(light)=>React.createElement('div',{style:{display:'flex',alignItems:'center',gap:10}},
+      React.createElement('div',{style:{position:'relative',width:34,height:34,borderRadius:9,background:light?'rgba(255,255,255,.1)':this.rgba(P.blue,.1),display:'flex',alignItems:'center',justifyContent:'center'}},
+        React.createElement('svg',{width:22,height:22,viewBox:'0 0 24 24',fill:'none'},
+          React.createElement('path',{d:'M3 15l4-5 3 3 4-7 3 4',stroke:light?'#fff':P.navy,strokeWidth:2,strokeLinecap:'round',strokeLinejoin:'round'}),
+          React.createElement('circle',{cx:20,cy:6,r:3,fill:P.blue}))),
+      React.createElement('div',{style:{fontSize:19,fontWeight:800,letterSpacing:'-.02em'}},
+        React.createElement('span',{style:{color:light?'#fff':'var(--navy)'}},'Stock'),
+        React.createElement('span',{style:{color:P.blue}},'Sense')));
+
+    const featIcons=['spark','target','chat','bell','summary','portfolio'];
+    const features=[
+      {title:'AI News Impact Analysis',desc:'We read financial news and detect which CSE companies are affected, with a clear direction and reason.'},
+      {title:'CSE Company Signals',desc:'Positive, negative, or neutral signals with a confidence score and risk level for each company.'},
+      {title:'RAG Market Assistant',desc:'Ask questions in plain English. Every answer is backed by the sources used.'},
+      {title:'News Alerts',desc:'Get notified when high-impact news affects companies on your watchlist.'},
+      {title:'Daily Market Summary',desc:'A simple morning brief of top signals, affected sectors, and watchlist updates.'},
+      {title:'Price Chart Insights',desc:'See price movement with news event markers and a simple AI movement outlook.'},
+    ].map((f,i)=>Object.assign(f,{icon:this.ic(featIcons[i])}));
+
+    const steps=[
+      {n:'1',text:'StockSense reads financial and economic news'},
+      {n:'2',text:'AI detects the affected CSE-listed companies'},
+      {n:'3',text:'You see simple positive / negative / neutral signals'},
+      {n:'4',text:'You get alerts and a daily market summary'},
+    ];
+
+    // nav
+    const navDef=[['Dashboard','dashboard','dashboard'],['Watchlist','watchlist','watch'],['News','news','news'],['Companies','companies','company'],['AI Chat','chat','chat'],['Alerts','alerts','alerts'],['Daily Summary','summary','summary'],['Portfolio','portfolio','portfolio'],['Settings','settings','settings']];
+    const activeFor=(route)=>{ if(route==='news') return r==='news'||r==='newsDetail'; if(route==='companies') return r==='companies'||r==='company'; if(route==='alerts') return r==='alerts'||r==='alertSettings'; return r===route; };
+    const navItems=navDef.map(([label,route,icon])=>{ const act=activeFor(route);
+      return {label, icon:this.ic(icon), onClick:()=>this.go(route),
+        style:`display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:10px;font-size:13.5px;font-weight:${act?600:500};cursor:pointer;color:${act?'#fff':'#94a3b8'};background:${act?this.rgba(P.blue,.22):'transparent'}`}; });
+    const mobileDef=[['Home','dashboard','home'],['News','news','news'],['Watchlist','watchlist','watch'],['AI Chat','chat','chat'],['Alerts','alerts','alerts']];
+    const mobileNav=mobileDef.map(([label,route,icon])=>({label,icon:this.ic(icon),onClick:()=>this.go(route),color:activeFor(route)?P.blue:'var(--muted)'}));
+
+    const vals={
+      themeAttr:S.theme, logo:logoMark(false), logoLight:logoMark(true),
+      isLanding:r==='landing', isAuth:r==='login'||r==='register', isOnboarding:r==='onboarding', isApp:appRoutes.includes(r),
+      goLogin:()=>this.setState({route:'login',authMode:'login'}), goRegister:()=>this.setState({route:'register',authMode:'register'}),
+      goLanding:()=>this.go('landing'), goDashboard:()=>this.go('dashboard'), goSummary:()=>this.go('summary'),
+      goNotifications:()=>this.go('notifications'), goSettings:()=>this.go('settings'),
+      toggleTheme:()=>this.toggleTheme(), themeIcon:this.ic(dark?'sun':'moon'),
+      iconSearch:this.ic('search'), iconBell:this.ic('bell'),
+      features, steps, navItems, mobileNav,
+    };
+
+    // auth
+    const isReg=S.authMode==='register';
+    Object.assign(vals,{
+      isRegister:isReg, isLoginMode:!isReg,
+      authTitle:isReg?'Create your account':'Welcome back',
+      authSub:isReg?'Start tracking AI signals for CSE companies.':'Log in to your StockSense dashboard.',
+      authCta:isReg?'Create account':'Log in',
+      authSwitchText:isReg?'Already have an account?':"Don't have an account?",
+      authSwitchLink:isReg?'Log in':'Register',
+      toggleAuth:()=>this.setState(s=>({authMode:s.authMode==='register'?'login':'register',route:s.authMode==='register'?'login':'register'})),
+      onAuthSubmit:()=>this.go(isReg?'onboarding':'dashboard'),
+    });
+
+    // onboarding
+    const onbBars=[1,2,3,4].map(i=>({color:i<=S.onbStep?'var(--blue)':'var(--border)'}));
+    const onbTitles=['','Select companies to follow','Select sectors you care about','Choose your alert preferences','How should we reach you?'];
+    const onbSubs=['','Pick the CSE companies you want AI signals and alerts for.','We will prioritise news from these sectors.','Tell us which updates matter to you.','Choose where you want to receive alerts.'];
+    const mkPick=(selected,onToggle)=>({
+      borderColor:selected?'var(--blue)':'var(--border)', bgColor:selected?this.rgba(P.blue,.07):'var(--card)',
+      tick:selected?'✓':'', tickColor:P.blue, toggle:onToggle, boxBg:selected?P.blue:'transparent'});
+    const onbCompanies=this.companies().map(c=>{ const sel=S.onbCompanies.includes(c.sym); return Object.assign({name:c.name.replace(' PLC',''),symbol:c.sym+'.N0000'}, mkPick(sel,()=>this.toggleArr('onbCompanies',c.sym))); });
+    const sectorsList=['Banking','Tourism','Insurance','Telecommunication','Food & Beverage','Diversified Holdings','Energy','Manufacturing'];
+    const onbSectors=sectorsList.map(s=>{ const sel=S.onbSectors.includes(s); return Object.assign({name:s}, mkPick(sel,()=>this.toggleArr('onbSectors',s))); });
+    const alertsList=['High impact news','Strong positive signals','Strong negative signals','Watchlist company affected','Price moved after news','Daily market summary'];
+    const onbAlerts=alertsList.map(a=>{ const sel=S.onbAlerts.includes(a); return Object.assign({name:a}, mkPick(sel,()=>this.toggleArr('onbAlerts',a))); });
+    const onbDelivery=[['Email','📧',false],['In-app notification','🔔',false],['WhatsApp / SMS','💬',true]].map(([name,icon,soon])=>{
+      const sel=S.onbDelivery.includes(name);
+      return {name,icon, tag:soon?'Coming soon':(sel?'Selected':''), tagColor:soon?P.amber:P.blue, cursor:soon?'not-allowed':'pointer',
+        borderColor:sel&&!soon?'var(--blue)':'var(--border)', bgColor:sel&&!soon?this.rgba(P.blue,.07):(soon?'var(--soft)':'var(--card)'),
+        toggle:soon?(()=>{}):(()=>this.toggleArr('onbDelivery',name))}; });
+    Object.assign(vals,{
+      onbStep:S.onbStep, onbBars, onbTitle:onbTitles[S.onbStep], onbSub:onbSubs[S.onbStep],
+      onbIsStep1:S.onbStep===1, onbIsStep2:S.onbStep===2, onbIsStep3:S.onbStep===3, onbIsStep4:S.onbStep===4,
+      onbCompanies, onbSectors, onbAlerts, onbDelivery,
+      onbBack:()=>this.onbBack(), onbNext:()=>this.onbNext(),
+      onbBackVis:S.onbStep>1?'visible':'hidden', onbNextLabel:S.onbStep>=4?'Finish Setup':'Continue',
+    });
+
+    // ---------- screen flags ----------
+    Object.assign(vals,{
+      isDashboard:r==='dashboard', isWatchlist:r==='watchlist', isNews:r==='news', isNewsDetail:r==='newsDetail',
+      isCompanies:r==='companies', isCompany:r==='company', isChat:r==='chat', isAlerts:r==='alerts',
+      isAlertSettings:r==='alertSettings', isSummary:r==='summary', isPortfolio:r==='portfolio',
+      isNotifications:r==='notifications', isSettings:r==='settings',
+    });
+
+    const all=this.companies().map(c=>this.enrich(c));
+    const bySym=(s)=>all.find(c=>c.sym===s);
+    const news=this.newsData().map(n=>this.newsEnrich(n));
+    const isPos=c=>c.sig.indexOf('positive')>=0, isNeg=c=>c.sig.indexOf('negative')>=0;
+    const chips=(list,cur,pick)=>list.map(name=>({name,active:name===cur,
+      style:`padding:7px 14px;border-radius:999px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;border:1px solid ${name===cur?P.blue:'var(--border)'};background:${name===cur?P.blue:'var(--card)'};color:${name===cur?'#fff':'var(--muted)'}`,
+      onClick:()=>pick(name)}));
+
+    // ----- DASHBOARD -----
+    vals.metrics=[
+      {label:'News Analyzed Today',value:'24',icon:this.ic('news'),c:P.blue},
+      {label:'Companies Affected',value:'12',icon:this.ic('company'),c:P.navy},
+      {label:'Watchlist Alerts',value:'3',icon:this.ic('bell'),c:P.amber},
+      {label:'High Confidence Signals',value:'7',icon:this.ic('shield'),c:P.green},
+    ].map(m=>Object.assign(m,{iconBg:this.rgba(m.c,dark?0.2:0.1)}));
+    vals.briefBadges=[
+      {t:'Mixed market mood',c:'#fbbf24'},{t:'8 news analyzed',c:'#60a5fa'},
+      {t:'5 companies affected',c:'#cbd5e1'},{t:'2 watchlist alerts',c:'#f87171'},
+    ].map(b=>({text:b.t, style:`font-size:12px;font-weight:600;padding:5px 11px;border-radius:999px;color:${b.c};background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12)`}));
+    vals.topPositive=all.filter(isPos).sort((a,b)=>b.conf-a.conf).slice(0,3);
+    vals.topNegative=all.filter(isNeg).sort((a,b)=>b.conf-a.conf).slice(0,2);
+    vals.dashNews=news.slice(0,5);
+    vals.watchAlertCards=[
+      {sym:'JKH',title:'JKH has a positive signal from tourism news',sig:'positive',time:'2h ago',conf:82},
+      {sym:'COMB',title:'COMB has a medium negative signal from banking news',sig:'negative',time:'4h ago',conf:71},
+    ].map(a=>{ const sm=this.sigMeta(a.sig); return Object.assign({},a,{sigFg:sm.fg,sigBg:sm.bg,sigArrow:sm.arrow,sigLabel:sm.label,onView:()=>this.openCompany(a.sym)}); });
+
+    // ----- WATCHLIST -----
+    const wf=S.watchFilter; let wItems=all.filter(c=>c.inWatch);
+    if(wf==='Positive') wItems=wItems.filter(isPos); else if(wf==='Negative') wItems=wItems.filter(isNeg);
+    else if(wf==='High Risk') wItems=wItems.filter(c=>c.risk==='High'); else if(wf==='High Confidence') wItems=wItems.filter(c=>c.conf>=75);
+    vals.watchItems=wItems; vals.watchEmpty=wItems.length===0;
+    vals.watchFilters=chips(['All','Positive','Negative','High Risk','High Confidence','Recently Updated'],wf,(n)=>this.setState({watchFilter:n}));
+
+    // ----- NEWS -----
+    const nf=S.newsFilter; let nItems=news.slice();
+    if(nf==='High Impact') nItems=nItems.filter(n=>n.mag==='High'); else if(nf==='Positive') nItems=nItems.filter(n=>n.sig==='positive');
+    else if(nf==='Negative') nItems=nItems.filter(n=>n.sig==='negative'); else if(nf==='Neutral') nItems=nItems.filter(n=>n.sig==='neutral');
+    vals.newsList=nItems;
+    vals.newsFilters=chips(['Latest','High Impact','Positive','Negative','Neutral','By Sector','By Company'],nf,(n)=>this.setState({newsFilter:n}));
+
+    // ----- COMPANIES -----
+    const cf=S.companyFilter; let cItems=all.slice();
+    if(cf==='Positive') cItems=cItems.filter(isPos); else if(cf==='Negative') cItems=cItems.filter(isNeg);
+    else if(cf==='High Risk') cItems=cItems.filter(c=>c.risk==='High'); else if(cf==='Watchlist') cItems=cItems.filter(c=>c.inWatch);
+    vals.companyList=cItems;
+    vals.companyFilters=chips(['All','Positive','Negative','High Risk','Watchlist','Top affected today'],cf,(n)=>this.setState({companyFilter:n}));
+
+    // ----- COMPANY DETAIL -----
+    const co=bySym(S.selSymbol)||all[0]; vals.co=co;
+    vals.coChart=this.chartData(co);
+    vals.coRange=chips(['1D','1W','1M','3M','6M','1Y'],S.range,(n)=>this.setState({range:n}));
+    vals.coRelated=news.filter(n=>n.affected.some(a=>a.sym===co.sym));
+    if(vals.coRelated.length===0) vals.coRelated=news.slice(0,2);
+    vals.coExplain=[
+      'Latest '+co.sector.toLowerCase()+' news is currently '+this.sigMeta(co.sig).label.toLowerCase(),
+      'Company has exposure to the '+co.sector.toLowerCase()+' segment',
+      'Sector sentiment is '+(isPos(co)?'improving':isNeg(co)?'softening':'mixed')+' right now',
+      'Confidence is based on news relevance and company matching',
+    ];
+    vals.coPredText='AI expects possible '+(isPos(co)?'upward':isNeg(co)?'downward':'sideways')+' movement in the next 7 days.';
+    vals.coSuggested=['Why is '+co.sym+' '+this.sigMeta(co.sig).label.toLowerCase()+' today?','What news affected '+co.sym+'?','What are the risks?','Compare '+co.sym+' with COMB'].map(q=>({text:q,onClick:()=>{ this.setState(s=>({route:'chat',chat:[...s.chat,{role:'user',text:q},this.aiAnswer(co.sym)]})); }}));
+    vals.coProfile={sector:co.sector, desc:co.name+' is a CSE-listed company operating in the '+co.sector.toLowerCase()+' space, with diversified revenue streams and an established market position.', related:['Tourism','Banking','Manufacturing'], relatedCos:all.filter(x=>x.sector===co.sector&&x.sym!==co.sym).slice(0,3)};
+    vals.selMarker = S.selMarker!=null ? vals.coChart.markers[S.selMarker] : null;
+    vals.coOnWatch=co.onWatch; vals.coOnAsk=()=>this.askAbout(co.sym);
+
+    // ----- CHAT -----
+    vals.chatMsgs=S.chat.map((m,i)=>this.chatEnrich(m,i));
+    vals.chatEmpty=S.chat.length===0;
+    vals.chatSuggested=['Why is JKH positive today?','What happened in the banking sector?','Which companies are affected by this news?','Explain this prediction in simple English.','Compare JKH and COMB.','What are the risks in my watchlist today?',"Summarize today's CSE market news."].map(q=>({text:q,onClick:()=>this.setState(st=>({chat:[...st.chat,{role:'user',text:q},this.aiAnswer(st.selSymbol)]}))}));
+    vals.chatInput=S.chatInput;
+    vals.onChatInput=(e)=>this.setState({chatInput:e.target.value});
+    vals.onChatKey=(e)=>{ if(e.key==='Enter'){ this.sendChat(); } };
+    vals.onChatSend=()=>this.sendChat();
+    vals.lastSources=(()=>{ for(let i=S.chat.length-1;i>=0;i--){ if(S.chat[i].role==='ai') return S.chat[i].sources; } return null; })();
+
+    // ----- ALERTS -----
+    const at=S.alertTab;
+    let alertsArr=[
+      {type:'High Impact News Alert',sym:'JKH',sig:'positive',conf:82,risk:'Medium',news:'Tourism arrivals increased in May',reason:'This may support hotel and leisure sector expectations.',time:'2h ago',read:false},
+      {type:'Watchlist Alert',sym:'COMB',sig:'negative',conf:71,risk:'Medium',news:'Central Bank keeps policy rates unchanged',reason:'Margin pressure could persist for banks near term.',time:'4h ago',read:false},
+      {type:'Strong Signal Alert',sym:'SPEN',sig:'strong-positive',conf:84,risk:'Medium',news:'Tourism arrivals increase in May',reason:'Tourism momentum may lift leisure earnings expectations.',time:'5h ago',read:true},
+      {type:'High Impact News Alert',sym:'LOLC',sig:'strong-negative',conf:79,risk:'High',news:'Interest rate concerns weigh on non-bank lenders',reason:'Rate worries may pressure financing margins.',time:'1d ago',read:true},
+      {type:'Price Move Alert',sym:'DIST',sig:'positive',conf:70,risk:'Low',news:'New import policy affects consumer goods sector',reason:'Price moved after the policy news was published.',time:'1d ago',read:true},
+    ];
+    if(at==='Watchlist') alertsArr=alertsArr.filter(a=>S.watch.includes(a.sym));
+    else if(at==='High Impact') alertsArr=alertsArr.filter(a=>a.type.indexOf('High Impact')>=0);
+    else if(at==='Positive') alertsArr=alertsArr.filter(a=>a.sig.indexOf('positive')>=0);
+    else if(at==='Negative') alertsArr=alertsArr.filter(a=>a.sig.indexOf('negative')>=0);
+    vals.alertList=alertsArr.map(a=>{ const sm=this.sigMeta(a.sig), rm=this.riskMeta(a.risk); const cc=bySym(a.sym);
+      return Object.assign({},a,{name:cc?cc.name:a.sym, sigFg:sm.fg,sigBg:sm.bg,sigArrow:sm.arrow,sigLabel:sm.label, riskFg:rm.fg,riskBg:rm.bg,riskLabel:rm.label, dotColor:a.read?'transparent':P.blue, onView:()=>this.openCompany(a.sym), onAsk:()=>this.askAbout(a.sym)}); });
+    vals.alertEmpty=vals.alertList.length===0;
+    vals.alertTabs=chips(['All','Watchlist','High Impact','Positive','Negative','Daily Summary'],at,(n)=>this.setState({alertTab:n}));
+    vals.goAlertSettings=()=>this.go('alertSettings');
+
+    // ----- ALERT SETTINGS -----
+    vals.asCompanies=all.map(c=>({name:c.name.replace(' PLC',''),sym:c.sym,sel:S.watch.includes(c.sym),
+      style:`display:flex;justify-content:space-between;align-items:center;padding:10px 13px;border-radius:10px;border:1px solid ${S.watch.includes(c.sym)?P.blue:'var(--border)'};background:${S.watch.includes(c.sym)?this.rgba(P.blue,.07):'var(--card)'};cursor:pointer`,
+      tick:S.watch.includes(c.sym)?'✓':'', toggle:()=>this.toggleWatch(c.sym)}));
+    const asSectorsList=['Banking','Tourism','Insurance','Telecommunication','Food & Beverage','Energy','Diversified Holdings'];
+    vals.asSectors=asSectorsList.map(s=>{ const sel=S.onbSectors.includes(s); return {name:s,sel,tick:sel?'✓':'',toggle:()=>this.toggleArr('onbSectors',s),
+      style:`display:flex;justify-content:space-between;align-items:center;padding:11px 14px;border-radius:10px;border:1px solid ${sel?P.blue:'var(--border)'};background:${sel?this.rgba(P.blue,.07):'var(--card)'};cursor:pointer`}; });
+    vals.asAlertTypes=['High impact news detected','My watchlist company is affected','Strong positive signal appears','Strong negative signal appears','Price moves after important news','Daily market summary ready'].map(a=>{ const sel=S.onbAlerts.includes(a); return {name:a,sel,tick:sel?'✓':'',toggle:()=>this.toggleArr('onbAlerts',a),boxBg:sel?P.blue:'transparent',boxBorder:sel?P.blue:'var(--border)'}; });
+    vals.asDelivery=[['Email',false],['In-app notification',false],['WhatsApp / SMS',true]].map(([name,soon])=>{ const sel=S.onbDelivery.includes(name); return {name,soon,tag:soon?'Coming soon':'',sel:sel&&!soon,tick:sel&&!soon?'✓':'',toggle:soon?(()=>{}):(()=>this.toggleArr('onbDelivery',name)),boxBg:sel&&!soon?P.blue:'transparent',boxBorder:sel&&!soon?P.blue:'var(--border)'}; });
+    vals.asFrequency=['Instant','Daily digest','Weekly digest'].map((f)=>({name:f,sel:(S.frequency||'Instant')===f,onClick:()=>this.setState({frequency:f})}));
+
+    // ----- SUMMARY -----
+    vals.sumWhen=chips(['Every morning','After market close','Both'],S.summaryWhen,(n)=>this.setState({summaryWhen:n}));
+    vals.sumType=chips(['Full CSE market summary','My watchlist only','Sector-wise summary','Top positive and negative signals'],S.summaryType,(n)=>this.setState({summaryType:n}));
+
+    // ----- PORTFOLIO -----
+    const holdRaw=[['JKH',500,170.00],['COMB',300,110.00],['SPEN',200,88.50],['DIAL',2000,10.20]];
+    let totVal=0, totCost=0, posC=0, negC=0;
+    vals.holdings=holdRaw.map(([sym,qty,avg])=>{ const c=bySym(sym); const cur=c.price; const val=cur*qty; const cost=avg*qty; const pl=val-cost; const plPct=(pl/cost*100);
+      totVal+=val; totCost+=cost; if(isPos(c))posC++; if(isNeg(c))negC++;
+      const sm=this.sigMeta(c.sig), rm=this.riskMeta(c.risk), plm=this.chgMeta(plPct);
+      return {sym, name:c.name.replace(' PLC',''), qty:qty.toLocaleString(), avg:'Rs. '+avg.toFixed(2), cur:'Rs. '+cur.toFixed(2),
+        plText:(pl>=0?'+':'')+'Rs. '+Math.abs(pl).toLocaleString(undefined,{maximumFractionDigits:0})+' ('+plm.text+')', plFg:plm.fg,
+        sigLabel:sm.label,sigArrow:sm.arrow,sigFg:sm.fg,sigBg:sm.bg, riskLabel:rm.label,riskFg:rm.fg,riskBg:rm.bg, onView:()=>this.openCompany(sym)}; });
+    const dayChg=(totVal-totCost);
+    vals.portfolioEmpty=false;
+    vals.portfolioCards=[
+      {label:'Total value',value:'Rs. '+totVal.toLocaleString(undefined,{maximumFractionDigits:0}),c:P.navy},
+      {label:"Today's change",value:(dayChg>=0?'+':'')+((dayChg/totCost)*100).toFixed(1)+'%',c:dayChg>=0?P.green:P.red},
+      {label:'Positive signals',value:String(posC),c:P.green},
+      {label:'Negative signals',value:String(negC),c:P.red},
+    ];
+    vals.portfolioRisk='Medium';
+    vals.portfolioAI='Your portfolio has medium news risk today. '+posC+' companies have positive signals and '+negC+' company has negative news impact. Banking sector exposure is moderate.';
+    vals.onAskPortfolio=()=>this.setState(s=>({route:'chat',chat:[...s.chat,{role:'user',text:'What are the risks in my portfolio today?'},this.aiAnswer('JKH')]}));
+
+    // ----- NOTIFICATIONS -----
+    vals.notifs=[
+      {title:'High-impact tourism news',msg:'JKH shows a positive signal from rising tourism arrivals.',time:'2h ago',read:false,sym:'JKH'},
+      {title:'Watchlist update',msg:'COMB has a medium negative signal from banking sector news.',time:'4h ago',read:false,sym:'COMB'},
+      {title:'Daily summary ready',msg:"Today's CSE AI market summary is ready to view.",time:'7h ago',read:true,sym:'JKH'},
+      {title:'Strong signal detected',msg:'SPEN shows a strong positive signal today.',time:'1d ago',read:true,sym:'SPEN'},
+    ].map(n=>Object.assign({},n,{dot:n.read?'transparent':P.blue, onView:()=>this.openCompany(n.sym)}));
+
+    // ----- SETTINGS -----
+    vals.themeOptions=['Light','Dark','System'].map(t=>({name:t,sel:(t==='Dark'?dark:t==='Light'?!dark:false),
+      onClick:()=>this.setState({theme:t==='Dark'?'dark':'light'})}));
+    vals.newsDetailData=this.newsEnrich(this.newsData().find(n=>n.id===S.selNews)||this.newsData()[0]);
+    vals.ndAffected=vals.newsDetailData.affected.map(a=>{ const c=bySym(a.sym); const rm=this.riskMeta(c.risk);
+      return Object.assign({},a,{name:c.name.replace(' PLC',''),sector:c.sector,riskLabel:c.risk,riskFg:rm.fg,riskBg:rm.bg,onView:()=>this.openCompany(a.sym)}); });
+    vals.ndSources=[
+      {t:'News article source',d:vals.newsDetailData.source},
+      {t:'Company profile used',d:vals.ndAffected.map(a=>a.sym).join(', ')},
+      {t:'Sector context',d:vals.newsDetailData.sector+' sector'},
+      {t:'Related past event',d:'Similar news 3 weeks ago'},
+    ];
+    vals.ndReason='This news is related to '+vals.newsDetailData.sector.toLowerCase()+' developments. The affected companies have direct exposure to this area, so similar news may shift investor interest in these stocks.';
+
+    // dashboard extras + other-screen placeholder
+    vals.iconSparkLight=React.createElement('svg',{width:18,height:18,viewBox:'0 0 24 24',fill:'none',stroke:'currentColor',strokeWidth:2,strokeLinecap:'round',strokeLinejoin:'round'},
+      React.createElement('path',{d:'M3 13l5-5 4 4 8-8'}), React.createElement('path',{d:'M17 4h4v4'}));
+    vals.goNewsPage=()=>this.go('news');
+    const otherTitles={watchlist:'My Watchlist',news:'Market News',newsDetail:'News Analysis',companies:'Companies',company:'Company Detail',chat:'StockSense AI Assistant',alerts:'Alerts',alertSettings:'Alert Settings',summary:'Daily Market Summary',portfolio:'My Portfolio',notifications:'Notifications',settings:'Settings'};
+    vals.isOtherScreen=!!otherTitles[r];
+    vals.otherScreenTitle=otherTitles[r]||'';
+
+    return vals;
+  }
+}
+</script>
+</body>
+</html>
