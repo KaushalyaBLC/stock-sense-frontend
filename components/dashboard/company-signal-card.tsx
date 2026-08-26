@@ -16,7 +16,7 @@ export function CompanySignalCard({ c }: { c: SignalCardData }) {
   const confTone = c.conf >= 75 ? "brand" : "muted";
 
   return (
-    <div className="rounded-[14px] border border-border bg-card p-4 shadow-[var(--shadow,0_1px_2px_rgba(15,23,42,0.05))]">
+    <div className="rounded-lg border border-border bg-card p-4">
       <div className="flex items-start justify-between gap-2.5">
         <div className="min-w-0">
           <div className="truncate text-[14.5px] font-bold">{c.name}</div>

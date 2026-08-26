@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Eye } from "lucide-react";
 import { ComingSoon } from "@/components/dashboard/coming-soon";
 
-export const metadata: Metadata = { title: "Watchlist — StockSense" };
+export const metadata: Metadata = { title: "Watchlist - StockSense" };
 
 export default function WatchlistPage() {
   return (

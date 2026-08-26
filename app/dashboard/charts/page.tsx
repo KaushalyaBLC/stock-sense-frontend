@@ -37,29 +37,29 @@ export default function ChartsPage() {
   return (
     <div className="mx-auto max-w-[1100px]">
       {/* Page header */}
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold tracking-tight">Price Charts</h1>
-        <p className="mt-1 text-sm text-text-secondary">
+      <div className="mb-8">
+        <h1 className="text-2xl font-semibold tracking-tight">Price Charts</h1>
+        <p className="mt-1.5 text-sm text-text-secondary">
           Historical OHLCV price data for CSE-listed companies.
         </p>
       </div>
 
-      <div className="grid gap-5 lg:grid-cols-[220px_1fr]">
+      <div className="grid gap-6 lg:grid-cols-[220px_1fr]">
         {/* Ticker sidebar */}
         <aside className="flex flex-col gap-2">
           {/* Search */}
-          <div className="flex items-center gap-2 rounded-[10px] border border-border bg-bg px-3 py-2">
+          <div className="flex items-center gap-2 rounded-md border border-border bg-background px-3 py-2">
             <Search className="size-3.5 shrink-0 text-text-muted" />
             <input
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search ticker…"
+              placeholder="Search ticker..."
               className="w-full bg-transparent text-[13px] outline-none placeholder:text-text-muted"
             />
           </div>
 
           {/* Ticker list */}
-          <div className="rounded-[12px] border border-border bg-card p-1.5">
+          <div className="rounded-lg border border-border bg-card p-1.5">
             {filteredTickers.length === 0 ? (
               <p className="px-2 py-3 text-center text-xs text-text-muted">No match</p>
             ) : (
@@ -72,7 +72,7 @@ export default function ChartsPage() {
                     key={t}
                     onClick={() => setTicker(t)}
                     className={cn(
-                      "flex w-full items-center justify-between rounded-[8px] px-3 py-2 text-left text-sm transition-colors",
+                      "flex w-full items-center justify-between rounded-md px-3 py-2 text-left text-sm transition-colors",
                       ticker === t
                         ? "bg-brand-soft font-semibold text-primary"
                         : "text-text-secondary hover:bg-surface-2 hover:text-foreground",
@@ -95,15 +95,15 @@ export default function ChartsPage() {
         </aside>
 
         {/* Chart panel */}
-        <div className="rounded-[16px] border border-border bg-card p-5 sm:p-6">
+        <div className="rounded-xl border border-border bg-card p-5 sm:p-6">
           {/* Ticker header */}
           <div className="mb-5 flex flex-wrap items-start justify-between gap-3">
             <div className="flex items-center gap-3">
-              <span className="grid size-10 place-items-center rounded-[12px] bg-brand-soft text-primary">
+              <span className="grid size-10 place-items-center rounded-lg bg-brand-soft text-primary">
                 <BarChart2 className="size-5" />
               </span>
               <div>
-                <h2 className="text-lg font-bold leading-tight">{ticker}</h2>
+                <h2 className="text-lg font-semibold leading-tight">{ticker}</h2>
                 {signal && (
                   <p className="text-[12.5px] text-text-secondary">{signal.company}</p>
                 )}
@@ -137,7 +137,7 @@ export default function ChartsPage() {
           {isFetching && (
             <div className="flex h-72 items-center justify-center gap-2 text-sm text-text-secondary">
               <Loader2 className="size-4 animate-spin" />
-              Loading price data…
+              Loading price data...
             </div>
           )}
 
@@ -168,7 +168,7 @@ export default function ChartsPage() {
 
           {/* AI signal context */}
           {signal?.reason && (
-            <div className="mt-5 rounded-[10px] border border-border bg-surface-2 p-3.5">
+            <div className="mt-5 rounded-md border border-border bg-surface-2 p-3.5">
               <p className="mb-1 text-[11px] font-semibold uppercase tracking-wider text-text-muted">
                 Latest AI Signal Reason
               </p>

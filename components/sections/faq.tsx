@@ -10,18 +10,15 @@ import { site } from "@/lib/site";
 
 export function FAQ() {
   return (
-    <section id="faq" className="border-t border-border py-20 sm:py-28">
+    <section id="faq" className="border-t border-border py-24 sm:py-36">
       <Container className="max-w-3xl">
         <Reveal className="text-center">
-          <p className="font-mono text-xs font-medium uppercase tracking-[0.16em] text-text-muted">
-            FAQ
-          </p>
-          <h2 className="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl">
+          <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">
             Questions, answered.
           </h2>
         </Reveal>
 
-        <Reveal delay={0.1} className="mt-10">
+        <Reveal delay={0.1} className="mt-12">
           <Accordion type="single" collapsible className="w-full">
             {site.faq.map((item, i) => (
               <AccordionItem key={i} value={`item-${i}`}>

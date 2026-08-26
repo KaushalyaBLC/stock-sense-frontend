@@ -6,9 +6,9 @@ import { site } from "@/lib/site";
 
 export function CTA() {
   return (
-    <section className="py-20 sm:py-28">
+    <section className="py-24 sm:py-36">
       <Container>
-        <Reveal className="relative overflow-hidden rounded-[16px] border border-border bg-navy px-6 py-16 text-center sm:px-12">
+        <Reveal className="relative overflow-hidden rounded-[16px] border border-border bg-navy px-6 py-20 text-center sm:px-12">
           <div className="pointer-events-none absolute inset-0 bg-grid opacity-40" aria-hidden />
           <div
             className="pointer-events-none absolute -bottom-24 left-1/2 size-[480px] -translate-x-1/2 rounded-full opacity-30 blur-3xl"

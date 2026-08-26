@@ -56,7 +56,7 @@ export function SignupForm() {
         router.push("/dashboard");
         router.refresh();
       } else {
-        // Confirmation required — show the check-your-email state.
+        // Confirmation required, show the check-your-email state.
         setConfirmEmail(email.trim());
       }
     } catch (err) {
@@ -196,7 +196,7 @@ export function SignupForm() {
       <Button type="submit" disabled={!canSubmit} className="mt-1 h-11">
         {isLoading ? (
           <>
-            <Loader2 className="size-4 animate-spin" /> Creating account…
+            <Loader2 className="size-4 animate-spin" /> Creating account...
           </>
         ) : (
           "Create account"

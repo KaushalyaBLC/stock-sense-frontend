@@ -20,9 +20,9 @@ export default function ChatPage() {
 
   return (
     <div className="mx-auto max-w-[900px]">
-      <div className="mb-4">
-        <h1 className="text-2xl font-bold tracking-tight">AI Assistant</h1>
-        <p className="mt-1 text-sm text-text-secondary">
+      <div className="mb-6">
+        <h1 className="text-2xl font-semibold tracking-tight">AI Assistant</h1>
+        <p className="mt-1.5 text-sm text-text-secondary">
           Ask anything about CSE companies and the news that moves them.
         </p>
       </div>
@@ -30,7 +30,7 @@ export default function ChatPage() {
         send={send}
         suggestions={SUGGESTIONS}
         emptyTitle="Ask StockSense AI"
-        emptyBody="I know CSE company profiles and recent news. Ask me anything — in plain English."
+        emptyBody="I know CSE company profiles and recent news. Ask me anything, in plain English."
       />
     </div>
   );

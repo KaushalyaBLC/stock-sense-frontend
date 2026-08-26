@@ -12,7 +12,7 @@ import { confidenceLabel } from "@/lib/plain-language";
 import { cn } from "@/lib/utils";
 
 /**
- * Dashboard KPI row — outcome-first for general users:
+ * Dashboard KPI row - outcome-first for general users:
  *  - Most positive / most negative STOCK (real name, not a count)
  *  - News analyzed this week, Companies covered (with plain-language captions)
  * Falls back gracefully when a section is empty.
@@ -28,7 +28,7 @@ export function MetricTiles({
   const companies = overview?.metrics?.companies_affected;
 
   return (
-    <div className="mb-5 grid grid-cols-2 gap-4 lg:grid-cols-4">
+    <div className="mb-6 grid grid-cols-2 gap-4 lg:grid-cols-4">
       <OutcomeTile signal={topPos} kind="up" />
       <OutcomeTile signal={topNeg} kind="down" />
 
@@ -64,12 +64,12 @@ function OutcomeTile({
     : "text-down-strong bg-down/12";
 
   return (
-    <div className="group flex flex-col rounded-[16px] border border-border bg-card p-[18px] shadow-[var(--shadow,0_1px_2px_rgba(15,23,42,0.05))] transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/30">
+    <div className="group flex flex-col rounded-lg border border-border bg-card p-5 transition-colors duration-300 hover:border-primary/30">
       <div className="flex items-center justify-between">
         <span className="text-[12.5px] font-medium text-text-secondary">
           {up ? "Most positive this week" : "Most negative this week"}
         </span>
-        <span className={cn("grid size-[34px] place-items-center rounded-[10px]", accent)}>
+        <span className={cn("grid size-[34px] place-items-center rounded-md", accent)}>
           <Icon className="size-[18px]" />
         </span>
       </div>
@@ -116,12 +116,12 @@ function CountTile({
   icon: typeof Newspaper;
 }) {
   return (
-    <div className="flex flex-col rounded-[16px] border border-border bg-card p-[18px] shadow-[var(--shadow,0_1px_2px_rgba(15,23,42,0.05))] transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/30">
+    <div className="flex flex-col rounded-lg border border-border bg-card p-5 transition-colors duration-300 hover:border-primary/30">
       <div className="flex items-center justify-between">
         <span className="text-[12.5px] font-medium text-text-secondary">
           {label}
         </span>
-        <span className="grid size-[34px] place-items-center rounded-[10px] bg-brand-soft text-primary">
+        <span className="grid size-[34px] place-items-center rounded-md bg-brand-soft text-primary">
           <Icon className="size-[18px]" />
         </span>
       </div>

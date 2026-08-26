@@ -74,11 +74,11 @@ export function PriceChart({ data, range, onRangeChange }: Props) {
 
   return (
     <div className="flex flex-col gap-4">
-      {/* Header row — price + change */}
+      {/* Header row: price + change */}
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
           <div className="flex items-baseline gap-2.5">
-            <span className="text-3xl font-bold tracking-tight tabular-nums">
+            <span className="text-3xl font-semibold tracking-tight tabular-nums">
               {fmt(last)}
             </span>
             <span className="text-sm text-text-secondary">LKR</span>
@@ -94,13 +94,13 @@ export function PriceChart({ data, range, onRangeChange }: Props) {
         </div>
 
         {/* Range picker */}
-        <div className="flex items-center gap-1 rounded-[10px] border border-border bg-surface-2 p-1">
+        <div className="flex items-center gap-1 rounded-md border border-border bg-surface-2 p-1">
           {RANGE_OPTIONS.map((opt) => (
             <button
               key={opt.value}
               onClick={() => onRangeChange(opt.value)}
               className={cn(
-                "rounded-[7px] px-3 py-1 text-[12.5px] font-medium transition-colors",
+                "rounded-sm px-3 py-1 text-[12.5px] font-medium transition-colors",
                 range === opt.value
                   ? "bg-card text-foreground shadow-sm"
                   : "text-text-secondary hover:text-foreground",
@@ -224,7 +224,7 @@ export function PriceChart({ data, range, onRangeChange }: Props) {
           { label: "Avg Volume", value: fmtVol(avgVol) },
           { label: "Data Points", value: `${points.length} days` },
         ].map(({ label, value }) => (
-          <div key={label} className="rounded-[10px] border border-border bg-surface-2 px-3 py-2.5">
+          <div key={label} className="rounded-md border border-border bg-surface-2 px-3 py-2.5">
             <p className="text-[11px] text-text-muted">{label}</p>
             <p className="mt-0.5 text-[13.5px] font-semibold tabular-nums">{value}</p>
           </div>

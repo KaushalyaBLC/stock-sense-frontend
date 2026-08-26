@@ -26,18 +26,15 @@ const SPAN = ["lg:col-span-2", "", "", "", "", ""];
 
 export function Features() {
   return (
-    <section id="features" className="border-t border-border py-20 sm:py-28">
+    <section id="features" className="border-t border-border py-24 sm:py-36">
       <Container>
         <Reveal className="max-w-2xl">
-          <p className="font-mono text-xs font-medium uppercase tracking-[0.16em] text-text-muted">
-            Features
-          </p>
-          <h2 className="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl">
+          <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">
             Everything you need to read the market with clarity.
           </h2>
         </Reveal>
 
-        <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-16 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {site.features.map((f, i) => {
             const Icon = ICONS[f.icon] ?? Target;
             return (

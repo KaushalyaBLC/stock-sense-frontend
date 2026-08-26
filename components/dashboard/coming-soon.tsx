@@ -23,8 +23,8 @@ export function ComingSoon({
         <ArrowLeft className="size-4" /> Back to dashboard
       </Link>
 
-      <div className="grid place-items-center rounded-[18px] border border-border bg-card p-10 text-center shadow-[var(--shadow,0_1px_2px_rgba(15,23,42,0.05))]">
-        <span className="grid size-14 place-items-center rounded-[16px] bg-brand-soft text-primary">
+      <div className="grid place-items-center rounded-xl border border-border bg-card p-12 text-center">
+        <span className="grid size-14 place-items-center rounded-lg bg-brand-soft text-primary">
           <Icon className="size-7" />
         </span>
         <span className="mt-5 rounded-full bg-warn/12 px-3 py-1 text-[11.5px] font-semibold uppercase tracking-wide text-warn">

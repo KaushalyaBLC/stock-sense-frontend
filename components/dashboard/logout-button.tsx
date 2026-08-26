@@ -30,7 +30,7 @@ export function LogoutButton() {
       className="flex w-full items-center gap-2.5 rounded-[6px] px-3 py-2 text-sm text-text-secondary transition-colors hover:bg-surface-2 hover:text-foreground disabled:opacity-60"
     >
       <LogOut className="size-4" />
-      {isLoading ? "Signing out…" : "Sign out"}
+      {isLoading ? "Signing out..." : "Sign out"}
     </button>
   );
 }

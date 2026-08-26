@@ -7,7 +7,7 @@ const TONE: Record<string, string> = {
   neutral: "bg-muted text-text-secondary",
 };
 
-/** Signal pill — color + glyph (a11y: never color alone). */
+/** Signal pill: color + glyph (a11y: never color alone). */
 export function SignalBadge({ sig, className }: { sig: SignalKind; className?: string }) {
   const m = signalMeta(sig);
   return (

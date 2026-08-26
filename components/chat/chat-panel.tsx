@@ -17,7 +17,7 @@ type Message = ChatTurn & { pending?: boolean; error?: boolean };
 export function ChatPanel({
   send,
   suggestions = [],
-  placeholder = "Ask about CSE companies or news…",
+  placeholder = "Ask about CSE companies or news...",
   emptyTitle = "Ask StockSense AI",
   emptyBody = "Get plain-English answers about CSE companies and the news that moves them.",
 }: {
@@ -67,7 +67,7 @@ export function ChatPanel({
         const next = [...prev];
         next[next.length - 1] = {
           role: "assistant",
-          content: "Sorry — I couldn't answer that just now. Please try again.",
+          content: "Sorry, I couldn't answer that just now. Please try again.",
           error: true,
         };
         return next;
@@ -81,15 +81,15 @@ export function ChatPanel({
   const empty = messages.length === 0;
 
   return (
-    <div className="flex h-[calc(100dvh-9rem)] flex-col rounded-[16px] border border-border bg-card shadow-[var(--shadow,0_1px_2px_rgba(15,23,42,0.05))]">
+    <div className="flex h-[calc(100dvh-9rem)] flex-col rounded-xl border border-border bg-card">
       {/* Messages */}
       <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 sm:p-6">
         {empty ? (
           <div className="mx-auto flex h-full max-w-md flex-col items-center justify-center text-center">
-            <span className="grid size-14 place-items-center rounded-[16px] bg-brand-soft text-primary">
+            <span className="grid size-14 place-items-center rounded-lg bg-brand-soft text-primary">
               <Sparkles className="size-7" />
             </span>
-            <h2 className="mt-4 text-lg font-bold tracking-tight">{emptyTitle}</h2>
+            <h2 className="mt-4 text-lg font-semibold tracking-tight">{emptyTitle}</h2>
             <p className="mt-2 text-sm text-text-secondary">{emptyBody}</p>
             {suggestions.length > 0 && (
               <div className="mt-6 flex flex-wrap justify-center gap-2">
@@ -134,14 +134,14 @@ export function ChatPanel({
             }}
             rows={1}
             placeholder={placeholder}
-            className="max-h-32 min-h-[44px] flex-1 resize-none rounded-[12px] border border-border bg-bg px-3.5 py-2.5 text-sm outline-none placeholder:text-text-muted focus:border-primary"
+            className="max-h-32 min-h-[44px] flex-1 resize-none rounded-md border border-border bg-background px-3.5 py-2.5 text-sm outline-none placeholder:text-text-muted focus:border-primary"
           />
           <Button type="submit" size="icon" className="size-11 shrink-0" disabled={busy || !input.trim()}>
             {busy ? <Loader2 className="size-4 animate-spin" /> : <Send className="size-4" />}
           </Button>
         </form>
         <p className="mx-auto mt-2 max-w-2xl text-center text-[11px] text-text-muted">
-          AI can be wrong. Not financial advice — always do your own research.
+          AI can be wrong. Not financial advice, always do your own research.
         </p>
       </div>
     </div>
@@ -162,7 +162,7 @@ function MessageBubble({ message }: { message: Message }) {
       </span>
       <div
         className={cn(
-          "max-w-[80%] rounded-[14px] px-3.5 py-2.5 text-[13.5px] leading-relaxed",
+          "max-w-[80%] rounded-lg px-3.5 py-2.5 text-[13.5px] leading-relaxed",
           isUser
             ? "bg-primary text-primary-foreground"
             : message.error
@@ -172,7 +172,7 @@ function MessageBubble({ message }: { message: Message }) {
       >
         {message.pending ? (
           <span className="inline-flex items-center gap-1.5 text-text-secondary">
-            <Loader2 className="size-3.5 animate-spin" /> Thinking…
+            <Loader2 className="size-3.5 animate-spin" /> Thinking...
           </span>
         ) : isUser ? (
           <span className="whitespace-pre-wrap">{message.content}</span>
@@ -204,9 +204,9 @@ function MessageBubble({ message }: { message: Message }) {
                 li: ({ children }) => <li className="leading-snug">{children}</li>,
                 // Horizontal rule
                 hr: () => <hr className="my-2.5 border-border" />,
-                // Code blocks — pre wraps block code, so code inside pre is block-level
+                // Code blocks: pre wraps block code, so code inside pre is block-level
                 pre: ({ children }) => (
-                  <pre className="my-2 overflow-x-auto rounded-[8px] bg-surface-1 p-2.5 font-mono text-[12px]">
+                  <pre className="my-2 overflow-x-auto rounded-lg bg-surface-1 p-2.5 font-mono text-[12px]">
                     {children}
                   </pre>
                 ),
@@ -228,7 +228,7 @@ function MessageBubble({ message }: { message: Message }) {
                 ),
                 // Tables (GFM)
                 table: ({ children }) => (
-                  <div className="my-2 overflow-x-auto rounded-[8px] border border-border">
+                  <div className="my-2 overflow-x-auto rounded-lg border border-border">
                     <table className="w-full text-[12.5px]">{children}</table>
                   </div>
                 ),

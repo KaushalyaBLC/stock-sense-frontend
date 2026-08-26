@@ -103,7 +103,7 @@ export function LoginForm() {
       <Button type="submit" disabled={!canSubmit} className="mt-1 h-11">
         {isLoading ? (
           <>
-            <Loader2 className="size-4 animate-spin" /> Signing in…
+            <Loader2 className="size-4 animate-spin" /> Signing in...
           </>
         ) : (
           "Sign in"

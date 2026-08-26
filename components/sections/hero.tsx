@@ -14,7 +14,7 @@ import { Magnetic } from "@/components/magnetic";
 import { SignalCard, type Signal } from "@/components/signal-card";
 import { site } from "@/lib/site";
 
-// Illustrative sample data only - not real companies, prices, or recommendations.
+// Illustrative sample data only - not a real company, price, or recommendation.
 const HERO_SIGNAL: Signal = {
   ticker: "SAMPLE.A",
   company: "Sample Holdings PLC",
@@ -28,23 +28,10 @@ const HERO_SIGNAL: Signal = {
   headline: "Example: group reports stronger first-half earnings across its segments.",
 };
 
-const SECONDARY_SIGNAL: Signal = {
-  ticker: "SAMPLE.B",
-  company: "Example Beverages PLC",
-  price: "Rs 1,042.00",
-  priceValue: 1042,
-  change: "-1.6% · 7-day outlook",
-  direction: "down",
-  confidence: 61,
-  sentiment: "Negative",
-  risk: "Medium",
-  headline: "Example: a new excise adjustment is expected to pressure margins.",
-};
-
 export function Hero() {
   const reduce = useReducedMotion();
 
-  // Pointer-reactive glow (motion values → no re-renders).
+  // Pointer-reactive glow (motion values -> no re-renders).
   const px = useMotionValue(50);
   const py = useMotionValue(30);
   const gx = useSpring(px, { stiffness: 60, damping: 20 });
@@ -70,84 +57,76 @@ export function Hero() {
     >
       <div className="pointer-events-none absolute inset-0 bg-grid" aria-hidden />
       <motion.div
-        className="pointer-events-none absolute inset-0 opacity-[0.16] blur-2xl"
+        className="pointer-events-none absolute inset-0 opacity-[0.14] blur-2xl"
         style={{ background: glowBg }}
         aria-hidden
       />
 
-      <Container className="relative grid items-center gap-12 py-20 lg:grid-cols-[1.05fr_0.95fr] lg:py-28">
-        {/* Left: copy */}
-        <div>
-          <motion.h1
-            initial={reduce ? false : { opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
-            className="text-balance text-4xl font-semibold leading-[1.08] tracking-tight sm:text-5xl lg:text-[3.4rem]"
-          >
-            Understand what every{" "}
-            <span className="text-primary">CSE headline</span> means for your
-            stocks.
-          </motion.h1>
+      <Container className="relative flex flex-col items-center pt-20 pb-20 text-center sm:pt-24 sm:pb-28 lg:pb-32">
+        <motion.h1
+          initial={reduce ? false : { opacity: 0, y: 18 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
+          className="text-balance max-w-3xl text-5xl font-semibold leading-[1.05] tracking-tight sm:text-6xl lg:text-7xl"
+        >
+          Understand every{" "}
+          <span className="text-primary">CSE headline.</span>
+        </motion.h1>
 
-          <motion.p
-            initial={reduce ? false : { opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
-            className="mt-5 max-w-xl text-lg leading-relaxed text-text-secondary"
-          >
-            {site.hero.subtitle}
-          </motion.p>
+        <motion.p
+          initial={reduce ? false : { opacity: 0, y: 18 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.14, ease: [0.16, 1, 0.3, 1] }}
+          className="mt-6 max-w-xl text-lg leading-relaxed text-text-secondary"
+        >
+          {site.hero.subtitle}
+        </motion.p>
 
-          <motion.div
-            initial={reduce ? false : { opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.18, ease: [0.16, 1, 0.3, 1] }}
-            className="mt-8 flex flex-col gap-3 sm:flex-row"
-          >
-            <Magnetic strength={0.3}>
-              <Button
-                size="lg"
-                className="group h-12 px-6 text-[15px] transition-transform active:scale-[0.98]"
-                asChild
-              >
-                <a href="/signup">
-                  {site.cta.primary}
-                  <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
-                </a>
-              </Button>
-            </Magnetic>
+        <motion.div
+          initial={reduce ? false : { opacity: 0, y: 18 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.22, ease: [0.16, 1, 0.3, 1] }}
+          className="mt-10 flex flex-col gap-3 sm:flex-row"
+        >
+          <Magnetic strength={0.3}>
             <Button
               size="lg"
-              variant="outline"
-              className="h-12 px-6 text-[15px] transition-transform active:scale-[0.98]"
+              className="group h-12 px-7 text-[15px] transition-transform active:scale-[0.98]"
               asChild
             >
-              <a href="#how">{site.cta.secondary}</a>
+              <a href="/signup">
+                {site.cta.primary}
+                <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
+              </a>
             </Button>
-          </motion.div>
-        </div>
-
-        {/* Right: signal card stack */}
-        <div className="relative mx-auto w-full max-w-md lg:mx-0">
-          <motion.div
-            initial={reduce ? false : { opacity: 0, y: 28, rotate: -1 }}
-            animate={{ opacity: 1, y: 0, rotate: 0 }}
-            transition={{ duration: 0.7, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+          </Magnetic>
+          <Button
+            size="lg"
+            variant="outline"
+            className="h-12 px-7 text-[15px] transition-transform active:scale-[0.98]"
+            asChild
           >
-            <SignalCard signal={HERO_SIGNAL} />
-          </motion.div>
+            <a href="#how">{site.cta.secondary}</a>
+          </Button>
+        </motion.div>
 
-          <motion.div
-            initial={reduce ? false : { opacity: 0, y: 24, x: 24 }}
-            animate={{ opacity: 1, y: 0, x: 0 }}
-            transition={{ duration: 0.7, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
-            className="absolute -bottom-14 -right-2 hidden w-64 sm:block"
-          >
-            <div className="rotate-2">
-              <SignalCard signal={SECONDARY_SIGNAL} className="scale-95 shadow-2xl" />
-            </div>
-          </motion.div>
-        </div>
+        {/* Product shot: the signal card as the singular hero visual */}
+        <motion.div
+          initial={reduce ? false : { opacity: 0, y: 36 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.32, ease: [0.16, 1, 0.3, 1] }}
+          className="relative mt-16 w-full max-w-[420px] sm:mt-20"
+        >
+          <div
+            className="pointer-events-none absolute -inset-x-20 -inset-y-16 -z-10 opacity-60 blur-3xl"
+            style={{
+              background:
+                "radial-gradient(circle, var(--color-brand) 0%, transparent 65%)",
+            }}
+            aria-hidden
+          />
+          <SignalCard signal={HERO_SIGNAL} className="shadow-2xl" />
+        </motion.div>
       </Container>
     </section>
   );

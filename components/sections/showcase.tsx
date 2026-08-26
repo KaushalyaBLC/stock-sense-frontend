@@ -41,9 +41,9 @@ const TRAIL = [
 
 export function Showcase() {
   return (
-    <section className="border-t border-border bg-surface-2/40 py-20 sm:py-28">
+    <section className="border-t border-border bg-surface-2/40 py-24 sm:py-36">
       <Container>
-        <div className="grid items-center gap-12 lg:grid-cols-2">
+        <div className="grid items-center gap-16 lg:grid-cols-2">
           {/* Left: the card */}
           <Reveal>
             <div className="mx-auto max-w-md">
@@ -53,14 +53,11 @@ export function Showcase() {
 
           {/* Right: the explanation / decision trail */}
           <Reveal delay={0.1}>
-            <p className="font-mono text-xs font-medium uppercase tracking-[0.16em] text-text-muted">
-              A signal, explained
-            </p>
-            <h2 className="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl">
+            <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">
               Never a black box.
             </h2>
             <p className="mt-4 max-w-md text-text-secondary">
-              Every signal comes with the reasoning behind it - so you can judge
+              Every signal comes with the reasoning behind it, so you can judge
               it for yourself, not just take a number on faith.
             </p>
 

@@ -33,13 +33,13 @@ export default async function NewsAnalysisPage({
     <div className="mx-auto max-w-[900px]">
       <Link
         href="/dashboard"
-        className="mb-5 inline-flex items-center gap-1.5 text-sm text-text-secondary transition-colors hover:text-foreground"
+        className="mb-6 inline-flex items-center gap-1.5 text-sm text-text-secondary transition-colors hover:text-foreground"
       >
         <ArrowLeft className="size-4" /> Back to dashboard
       </Link>
 
       {/* Header */}
-      <div className="rounded-[16px] border border-border bg-card p-6 shadow-[var(--shadow,0_1px_2px_rgba(15,23,42,0.05))]">
+      <div className="rounded-xl border border-border bg-card p-6">
         <div className="mb-3 flex flex-wrap items-center gap-2 text-[12.5px] text-text-muted">
           <span className="font-medium">{detail.source}</span>
           {detail.published_at && <span>· {detail.published_at}</span>}
@@ -118,7 +118,7 @@ export default async function NewsAnalysisPage({
       {trailSteps.length > 0 && (
         <Section title="Decision Trail" icon={ListChecks}>
           <p className="mb-4 text-[13px] text-text-secondary">
-            How the AI reached its conclusion — step by step.
+            How the AI reached its conclusion, step by step.
           </p>
           <ol className="relative flex flex-col gap-4 border-l border-border pl-5">
             {trailSteps.map((s, i) => (
@@ -144,7 +144,7 @@ export default async function NewsAnalysisPage({
       )}
 
       {/* Disclaimer */}
-      <div className="mt-6 flex items-center gap-2 rounded-[12px] border border-warn/30 bg-warn/[0.08] px-4 py-3 text-[12.5px] text-text-secondary">
+      <div className="mt-6 flex items-center gap-2 rounded-lg border border-warn/30 bg-warn/[0.08] px-4 py-3 text-[12.5px] text-text-secondary">
         <TriangleAlert className="size-4 shrink-0 text-warn" />
         StockSense provides AI-powered decision support only. It is not financial advice.
       </div>
@@ -162,10 +162,10 @@ function Section({
   children: React.ReactNode;
 }) {
   return (
-    <section className="mt-5 rounded-[16px] border border-border bg-card p-6 shadow-[var(--shadow,0_1px_2px_rgba(15,23,42,0.05))]">
+    <section className="mt-6 rounded-xl border border-border bg-card p-6">
       <div className="mb-4 flex items-center gap-2">
         <Icon className="size-[18px] text-primary" />
-        <h2 className="text-base font-bold">{title}</h2>
+        <h2 className="text-base font-semibold">{title}</h2>
       </div>
       {children}
     </section>
@@ -191,10 +191,10 @@ function CompanyImpact({
 }) {
   const riskTone = c.risk === "High" ? "red" : c.risk === "Medium" ? "amber" : "muted";
   return (
-    <div className="rounded-[12px] border border-border bg-surface-2/50 p-4">
+    <div className="rounded-lg border border-border bg-surface-2/50 p-4">
       <div className="flex items-start justify-between gap-2.5">
         <div className="min-w-0">
-          <div className="text-[14.5px] font-bold">{c.company}</div>
+          <div className="text-[14.5px] font-semibold">{c.company}</div>
           <div className="font-mono text-xs text-text-muted">
             {symbolFull(c.ticker)} · {c.sector}
           </div>
@@ -212,7 +212,7 @@ function CompanyImpact({
       </div>
 
       {/* Plain-language takeaway */}
-      <p className="mb-2 rounded-[8px] bg-brand-soft/60 px-3 py-2 text-[12.5px] font-medium text-foreground">
+      <p className="mb-2 rounded-md bg-brand-soft/60 px-3 py-2 text-[12.5px] font-medium text-foreground">
         {plainMeaning({ company: c.company, sig: c.signal, confidence: c.confidence })}
       </p>
 
@@ -221,7 +221,7 @@ function CompanyImpact({
       {(c.bull_case || c.bear_case) && (
         <div className="mt-3 grid gap-2 sm:grid-cols-2">
           {c.bull_case && (
-            <div className="rounded-[8px] border border-up/20 bg-up/[0.06] p-3">
+            <div className="rounded-md border border-up/20 bg-up/[0.06] p-3">
               <div className="mb-1 flex items-center gap-1.5 text-[11.5px] font-semibold text-up-strong">
                 <TrendingUp className="size-3.5" /> Best case
               </div>
@@ -231,7 +231,7 @@ function CompanyImpact({
             </div>
           )}
           {c.bear_case && (
-            <div className="rounded-[8px] border border-down/20 bg-down/[0.06] p-3">
+            <div className="rounded-md border border-down/20 bg-down/[0.06] p-3">
               <div className="mb-1 flex items-center gap-1.5 text-[11.5px] font-semibold text-down-strong">
                 <TrendingDown className="size-3.5" /> Worst case
               </div>

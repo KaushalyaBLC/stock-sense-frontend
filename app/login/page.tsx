@@ -4,7 +4,7 @@ import { AuthShell } from "@/components/auth/auth-shell";
 import { LoginForm } from "@/components/auth/login-form";
 
 export const metadata: Metadata = {
-  title: "Sign in — StockSense",
+  title: "Sign in - StockSense",
   description: "Sign in to your StockSense account.",
 };
 

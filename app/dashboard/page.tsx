@@ -14,7 +14,7 @@ import {
   type Company,
 } from "@/lib/dashboard-data";
 
-export const metadata: Metadata = { title: "Dashboard — StockSense" };
+export const metadata: Metadata = { title: "Dashboard - StockSense" };
 
 // Adapt an API signal (or mock Company) into the CompanySignalCard shape.
 type CardData = Pick<Company, "sym" | "name" | "sector" | "sig" | "conf" | "risk" | "reason"> & {
@@ -69,28 +69,28 @@ export default async function DashboardPage() {
 
   return (
     <div className="mx-auto max-w-[1200px]">
-      <div className="mb-5">
-        <h1 className="text-[27px] font-extrabold tracking-tight">
+      <div className="mb-6">
+        <h1 className="text-[28px] font-semibold tracking-tight">
           Good morning, {firstName}
         </h1>
-        <p className="mt-1 text-sm text-text-secondary">
+        <p className="mt-1.5 text-sm text-text-secondary">
           Here&apos;s what AI found in the market this week.
         </p>
       </div>
 
       {/* A. Market Brief */}
-      <div className="mb-5 overflow-hidden rounded-[18px] bg-navy p-6">
+      <div className="mb-6 overflow-hidden rounded-xl bg-navy p-6 sm:p-7">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div className="max-w-2xl">
-            <div className="mb-2.5 flex items-center gap-2.5">
-              <span className="grid size-7 place-items-center rounded-[9px] bg-primary/25 text-blue-400">
+            <div className="mb-3 flex items-center gap-2.5">
+              <span className="grid size-7 place-items-center rounded-md bg-primary/25 text-blue-400">
                 <Sparkles className="size-4" />
               </span>
-              <span className="text-[15px] font-bold text-white">
+              <span className="text-[15px] font-semibold text-white">
                 This Week&apos;s AI Market Brief
               </span>
             </div>
-            <div className="mb-2 text-xl font-bold text-white">
+            <div className="mb-2 text-xl font-semibold text-white">
               Market mood:{" "}
               <span className="text-amber-400">{brief?.mood ?? "Mixed"}</span>
             </div>
@@ -115,14 +115,14 @@ export default async function DashboardPage() {
         </div>
       </div>
 
-      {/* B. Metric tiles — outcome-first for general users */}
+      {/* B. Metric tiles - outcome-first for general users */}
       <MetricTiles overview={overview} />
 
       {/* C/D. Signals two-column */}
-      <div className="mb-5 grid items-start gap-5 lg:grid-cols-2">
+      <div className="mb-6 grid items-start gap-6 lg:grid-cols-2">
         <div>
           <div className="mb-3 flex items-center gap-2">
-            <span className="text-base font-bold">Top Positive Signals</span>
+            <span className="text-base font-semibold">Top Positive Signals</span>
             <span className="size-2 rounded-full bg-up" aria-hidden />
           </div>
           <div className="flex flex-col gap-3">
@@ -136,7 +136,7 @@ export default async function DashboardPage() {
 
         <div>
           <div className="mb-3 flex items-center gap-2">
-            <span className="text-base font-bold">Top Negative Signals</span>
+            <span className="text-base font-semibold">Top Negative Signals</span>
             <span className="size-2 rounded-full bg-down" aria-hidden />
           </div>
           <div className="flex flex-col gap-3">
@@ -144,8 +144,8 @@ export default async function DashboardPage() {
               <CompanySignalCard key={c.sym} c={c} />
             ))}
 
-            <div className="rounded-[14px] border border-border bg-card p-4 shadow-[var(--shadow,0_1px_2px_rgba(15,23,42,0.05))]">
-              <div className="mb-2.5 text-sm font-bold">Watchlist Alerts</div>
+            <div className="rounded-lg border border-border bg-card p-4">
+              <div className="mb-2.5 text-sm font-semibold">Watchlist Alerts</div>
               <p className="text-[12.5px] text-text-secondary">
                 Add companies to your watchlist to get high-impact alerts here.
               </p>
@@ -156,16 +156,16 @@ export default async function DashboardPage() {
 
       {/* F. Latest news */}
       <div className="mb-3 flex items-center justify-between">
-        <span className="text-base font-bold">Latest News</span>
+        <span className="text-base font-semibold">Latest News</span>
         <Link href="/dashboard/news" className="text-sm font-semibold text-primary hover:underline">
           View all
         </Link>
       </div>
-      <div className="mb-5 flex flex-col gap-2.5">
+      <div className="mb-6 flex flex-col gap-2.5">
         {news.map((n) => (
           <div
             key={n.id}
-            className="flex flex-wrap items-start gap-3.5 rounded-[14px] border border-border bg-card p-4 shadow-[var(--shadow,0_1px_2px_rgba(15,23,42,0.05))]"
+            className="flex flex-wrap items-start gap-3.5 rounded-lg border border-border bg-card p-4"
           >
             <div className="min-w-[200px] flex-1">
               <div className="mb-1.5 flex items-center gap-2">
@@ -175,7 +175,7 @@ export default async function DashboardPage() {
                   {n.time ? ` · ${n.time}` : ""}
                 </span>
               </div>
-              <div className="mb-1 text-[14.5px] font-bold">{n.title}</div>
+              <div className="mb-1 text-[14.5px] font-semibold">{n.title}</div>
               <div className="text-[12.5px] leading-relaxed text-text-secondary">
                 {n.summary}
               </div>
@@ -188,9 +188,9 @@ export default async function DashboardPage() {
       </div>
 
       {/* G. Daily summary CTA */}
-      <div className="flex flex-wrap items-center justify-between gap-3.5 rounded-[16px] border border-border bg-gradient-to-r from-card to-surface-2 p-[22px] shadow-[var(--shadow,0_1px_2px_rgba(15,23,42,0.05))]">
+      <div className="flex flex-wrap items-center justify-between gap-3.5 rounded-xl border border-border bg-gradient-to-r from-card to-surface-2 p-6">
         <div>
-          <div className="text-base font-bold">
+          <div className="text-base font-semibold">
             Get your AI market summary every morning.
           </div>
           <div className="mt-1 text-[13.5px] text-text-secondary">
@@ -204,7 +204,7 @@ export default async function DashboardPage() {
         </div>
       </div>
 
-      <div className="mt-[18px] flex items-center gap-2 rounded-[12px] border border-warn/30 bg-warn/[0.08] px-4 py-3 text-[12.5px] text-text-secondary">
+      <div className="mt-5 flex items-center gap-2 rounded-lg border border-warn/30 bg-warn/[0.08] px-4 py-3 text-[12.5px] text-text-secondary">
         <TriangleAlert className="size-4 shrink-0 text-warn" />
         StockSense provides AI-powered decision support only. It is not financial advice.
       </div>
@@ -214,7 +214,7 @@ export default async function DashboardPage() {
 
 function EmptyCard({ text }: { text: string }) {
   return (
-    <div className="rounded-[14px] border border-dashed border-border bg-surface/50 p-6 text-center text-[13px] text-text-secondary">
+    <div className="rounded-lg border border-dashed border-border bg-surface/50 p-6 text-center text-[13px] text-text-secondary">
       {text}
     </div>
   );

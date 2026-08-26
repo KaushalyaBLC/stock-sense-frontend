@@ -71,22 +71,22 @@ export default function NewsPage() {
 
   return (
     <div className="mx-auto max-w-[1000px]">
-      <div className="mb-5">
-        <h1 className="text-[27px] font-extrabold tracking-tight">Market News</h1>
-        <p className="mt-1 text-sm text-text-secondary">
+      <div className="mb-6">
+        <h1 className="text-[28px] font-semibold tracking-tight">Market News</h1>
+        <p className="mt-1.5 text-sm text-text-secondary">
           AI-analyzed CSE news, filtered and searchable.
         </p>
       </div>
 
       {/* Filters */}
-      <div className="mb-5 flex flex-col gap-3 rounded-[14px] border border-border bg-card p-4">
+      <div className="mb-6 flex flex-col gap-3 rounded-lg border border-border bg-card p-4">
         {/* Search */}
-        <div className="flex items-center gap-2.5 rounded-[10px] border border-border bg-bg px-3.5 py-2.5">
+        <div className="flex items-center gap-2.5 rounded-md border border-border bg-background px-3.5 py-2.5">
           <Search className="size-4 text-text-muted" />
           <input
             value={searchInput}
             onChange={(e) => setSearchInput(e.target.value)}
-            placeholder="Search headlines…"
+            placeholder="Search headlines..."
             className="w-full bg-transparent text-sm outline-none placeholder:text-text-muted"
           />
         </div>
@@ -102,7 +102,7 @@ export default function NewsPage() {
             <select
               value={sector}
               onChange={(e) => onFilter(setSector)(e.target.value)}
-              className="rounded-[8px] border border-border bg-bg px-2.5 py-1.5 text-[13px] outline-none focus:border-primary"
+              className="rounded-md border border-border bg-background px-2.5 py-1.5 text-[13px] outline-none focus:border-primary"
             >
               <option value="">All sectors</option>
               {(sectors ?? []).map((s) => (
@@ -137,7 +137,7 @@ export default function NewsPage() {
           {Array.from({ length: 6 }).map((_, i) => (
             <div
               key={i}
-              className="h-[92px] animate-pulse rounded-[14px] border border-border bg-surface-2/50"
+              className="h-[92px] animate-pulse rounded-lg border border-border bg-surface-2/50"
             />
           ))}
         </div>
@@ -151,7 +151,7 @@ export default function NewsPage() {
             <Link
               key={n.id}
               href={`/dashboard/news/${n.id}`}
-              className="group flex flex-wrap items-start gap-3.5 rounded-[14px] border border-border bg-card p-4 transition-colors hover:border-primary/40"
+              className="group flex flex-wrap items-start gap-3.5 rounded-lg border border-border bg-card p-4 transition-colors hover:border-primary/40"
             >
               <div className="min-w-[200px] flex-1">
                 <div className="mb-1.5 flex flex-wrap items-center gap-2">
@@ -169,13 +169,13 @@ export default function NewsPage() {
                     </span>
                   ))}
                 </div>
-                <div className="mb-1 text-[14.5px] font-bold">{n.title}</div>
+                <div className="mb-1 text-[14.5px] font-semibold">{n.title}</div>
                 <div className="line-clamp-2 text-[12.5px] leading-relaxed text-text-secondary">
                   {n.summary}
                 </div>
               </div>
               <span className="self-center whitespace-nowrap text-[12.5px] font-semibold text-primary opacity-0 transition-opacity group-hover:opacity-100">
-                View Analysis →
+                View Analysis
               </span>
             </Link>
           ))}
@@ -192,7 +192,7 @@ export default function NewsPage() {
           >
             {isFetching ? (
               <>
-                <Loader2 className="size-4 animate-spin" /> Loading…
+                <Loader2 className="size-4 animate-spin" /> Loading...
               </>
             ) : (
               "Load more"
@@ -248,7 +248,7 @@ function FilterGroup({
 
 function Empty({ text }: { text: string }) {
   return (
-    <div className="grid place-items-center rounded-[14px] border border-dashed border-border bg-surface/50 p-12 text-center">
+    <div className="grid place-items-center rounded-lg border border-dashed border-border bg-surface/50 p-12 text-center">
       <Newspaper className="size-8 text-text-muted" />
       <p className="mt-3 text-sm text-text-secondary">{text}</p>
     </div>

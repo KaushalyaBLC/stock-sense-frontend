@@ -16,7 +16,7 @@ import { confidenceLabel, riskLabel } from "@/lib/plain-language";
 import { getOverview, getSignals, getNews } from "@/lib/server-market";
 import { symbolFull } from "@/lib/dashboard-data";
 
-export const metadata: Metadata = { title: "Weekly Market Summary — StockSense" };
+export const metadata: Metadata = { title: "Weekly Market Summary - StockSense" };
 
 const today = () =>
   new Date().toLocaleDateString("en-US", {
@@ -56,28 +56,28 @@ export default async function DailySummaryPage() {
     <div className="mx-auto max-w-[920px]">
       <Link
         href="/dashboard"
-        className="mb-5 inline-flex items-center gap-1.5 text-sm text-text-secondary transition-colors hover:text-foreground"
+        className="mb-6 inline-flex items-center gap-1.5 text-sm text-text-secondary transition-colors hover:text-foreground"
       >
         <ArrowLeft className="size-4" /> Back to dashboard
       </Link>
 
       <div className="mb-1 text-sm font-medium text-text-muted">{today()}</div>
-      <h1 className="text-[28px] font-extrabold tracking-tight">
+      <h1 className="text-[28px] font-semibold tracking-tight">
         Weekly Market Summary
       </h1>
-      <p className="mt-1 text-sm text-text-secondary">
+      <p className="mt-1.5 text-sm text-text-secondary">
         Your AI brief of this week&apos;s CSE signals, sectors, and news.
       </p>
 
       {/* Brief hero */}
-      <div className="mt-6 overflow-hidden rounded-[18px] bg-navy p-6">
-        <div className="mb-2.5 flex items-center gap-2.5">
-          <span className="grid size-7 place-items-center rounded-[9px] bg-primary/25 text-blue-400">
+      <div className="mt-6 overflow-hidden rounded-xl bg-navy p-6 sm:p-7">
+        <div className="mb-3 flex items-center gap-2.5">
+          <span className="grid size-7 place-items-center rounded-md bg-primary/25 text-blue-400">
             <Sparkles className="size-4" />
           </span>
-          <span className="text-[15px] font-bold text-white">AI Market Brief</span>
+          <span className="text-[15px] font-semibold text-white">AI Market Brief</span>
         </div>
-        <div className="mb-2 text-2xl font-bold text-white">
+        <div className="mb-2 text-2xl font-semibold text-white">
           Market mood:{" "}
           <span className="text-amber-400">{brief?.mood ?? "Mixed"}</span>
         </div>
@@ -97,7 +97,7 @@ export default async function DailySummaryPage() {
       </div>
 
       {/* Metrics */}
-      <div className="mt-5 grid grid-cols-2 gap-4 lg:grid-cols-4">
+      <div className="mt-6 grid grid-cols-2 gap-4 lg:grid-cols-4">
         <Stat label="News Analyzed This Week" value={metrics?.news_analyzed_week} icon={Newspaper} />
         <Stat label="Companies Affected" value={metrics?.companies_affected} icon={Building2} />
         <Stat label="Positive Signals" value={positives.length} icon={TrendingUp} tone="up" />
@@ -126,7 +126,7 @@ export default async function DailySummaryPage() {
       )}
 
       {/* Signals: positive + negative */}
-      <div className="mt-5 grid gap-5 lg:grid-cols-2">
+      <div className="mt-6 grid gap-6 lg:grid-cols-2">
         <SignalColumn title="Positive Signals" tone="up" items={positives} />
         <SignalColumn title="Negative Signals" tone="down" items={negatives} />
       </div>
@@ -139,7 +139,7 @@ export default async function DailySummaryPage() {
               <Link
                 key={n.id}
                 href={`/dashboard/news/${n.id}`}
-                className="flex items-start gap-3 rounded-[10px] border border-border bg-surface-2/40 p-3 transition-colors hover:border-primary/30"
+                className="flex items-start gap-3 rounded-md border border-border bg-surface-2/40 p-3 transition-colors hover:border-primary/30"
               >
                 <SignalBadge sig={n.signal} className="mt-0.5 shrink-0 px-2 py-0.5" />
                 <div className="min-w-0">
@@ -156,9 +156,9 @@ export default async function DailySummaryPage() {
       )}
 
       {/* Subscribe nudge */}
-      <div className="mt-5 flex flex-wrap items-center justify-between gap-3.5 rounded-[16px] border border-border bg-gradient-to-r from-card to-surface-2 p-[22px]">
+      <div className="mt-6 flex flex-wrap items-center justify-between gap-3.5 rounded-xl border border-border bg-gradient-to-r from-card to-surface-2 p-6">
         <div>
-          <div className="text-base font-bold">Get this summary every morning.</div>
+          <div className="text-base font-semibold">Get this summary every morning.</div>
           <div className="mt-1 text-[13.5px] text-text-secondary">
             We&apos;ll send the brief, top signals, and watchlist updates to your inbox.
           </div>
@@ -166,7 +166,7 @@ export default async function DailySummaryPage() {
         <Button>Subscribe</Button>
       </div>
 
-      <div className="mt-5 flex items-center gap-2 rounded-[12px] border border-warn/30 bg-warn/[0.08] px-4 py-3 text-[12.5px] text-text-secondary">
+      <div className="mt-5 flex items-center gap-2 rounded-lg border border-warn/30 bg-warn/[0.08] px-4 py-3 text-[12.5px] text-text-secondary">
         <TriangleAlert className="size-4 shrink-0 text-warn" />
         StockSense provides AI-powered decision support only. It is not financial advice.
       </div>
@@ -186,19 +186,19 @@ function Stat({
   tone?: "up";
 }) {
   return (
-    <div className="rounded-[16px] border border-border bg-card p-[18px] shadow-[var(--shadow,0_1px_2px_rgba(15,23,42,0.05))]">
+    <div className="rounded-lg border border-border bg-card p-5">
       <div className="flex items-center justify-between">
         <span className="text-[12.5px] font-medium text-text-secondary">{label}</span>
         <span
-          className={`grid size-[34px] place-items-center rounded-[10px] ${
+          className={`grid size-[34px] place-items-center rounded-md ${
             tone === "up" ? "bg-up/12 text-up-strong" : "bg-brand-soft text-primary"
           }`}
         >
           <Icon className="size-[18px]" />
         </span>
       </div>
-      <div className="mt-2.5 font-mono text-[30px] font-extrabold tracking-tight">
-        {value ?? "—"}
+      <div className="mt-2.5 font-mono text-[30px] font-semibold tracking-tight">
+        {value ?? "-"}
       </div>
     </div>
   );
@@ -206,8 +206,8 @@ function Stat({
 
 function Card({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <section className="mt-5 rounded-[16px] border border-border bg-card p-6 shadow-[var(--shadow,0_1px_2px_rgba(15,23,42,0.05))]">
-      <h2 className="mb-4 text-base font-bold">{title}</h2>
+    <section className="mt-6 rounded-xl border border-border bg-card p-6">
+      <h2 className="mb-4 text-base font-semibold">{title}</h2>
       {children}
     </section>
   );
@@ -235,12 +235,12 @@ function SignalColumn({
     <div>
       <div className="mb-3 flex items-center gap-2">
         <Icon className={`size-4 ${tone === "up" ? "text-up-strong" : "text-down-strong"}`} />
-        <span className="text-base font-bold">{title}</span>
+        <span className="text-base font-semibold">{title}</span>
         <span className="font-mono text-sm text-text-muted">({items.length})</span>
       </div>
       <div className="flex flex-col gap-2.5">
         {items.length === 0 ? (
-          <div className="rounded-[12px] border border-dashed border-border bg-surface/50 p-5 text-center text-[13px] text-text-secondary">
+          <div className="rounded-lg border border-dashed border-border bg-surface/50 p-5 text-center text-[13px] text-text-secondary">
             None today.
           </div>
         ) : (
@@ -248,11 +248,11 @@ function SignalColumn({
             <Link
               key={s.ticker}
               href={`/dashboard/news/${s.article_id}`}
-              className="rounded-[12px] border border-border bg-card p-3.5 transition-colors hover:border-primary/30"
+              className="rounded-lg border border-border bg-card p-3.5 transition-colors hover:border-primary/30"
             >
               <div className="flex items-start justify-between gap-2">
                 <div className="min-w-0">
-                  <div className="truncate text-[13.5px] font-bold">{s.company}</div>
+                  <div className="truncate text-[13.5px] font-semibold">{s.company}</div>
                   <div className="font-mono text-[11.5px] text-text-muted">
                     {symbolFull(s.ticker)} · {s.sector}
                   </div>

@@ -24,28 +24,28 @@ export default async function DashboardLayout({
 
   return (
     <div className="grid h-[100dvh] overflow-hidden lg:grid-cols-[260px_1fr]">
-      {/* Sidebar — fixed height, scrolls independently if content overflows */}
+      {/* Sidebar - fixed height, scrolls independently if content overflows */}
       <aside className="hidden flex-col border-r border-border bg-surface overflow-y-auto lg:flex">
-        <div className="flex h-16 shrink-0 items-center border-b border-border px-5">
+        <div className="flex h-[72px] shrink-0 items-center border-b border-border px-6">
           <Logo />
         </div>
-        <div className="flex flex-1 flex-col justify-between p-3">
+        <div className="flex flex-1 flex-col justify-between p-4">
           <SidebarNav />
-          <div className="border-t border-border pt-3">
+          <div className="border-t border-border pt-4">
             <LogoutButton />
           </div>
         </div>
       </aside>
 
-      {/* Main — its own scroll context; header sticks to the top of this column */}
+      {/* Main - its own scroll context; header sticks to the top of this column */}
       <div className="flex min-w-0 flex-col overflow-y-auto">
-        <header className="sticky top-0 z-20 flex h-16 shrink-0 items-center gap-4 border-b border-border bg-card/80 px-5 backdrop-blur-sm sm:px-6">
+        <header className="sticky top-0 z-20 flex h-[72px] shrink-0 items-center gap-4 border-b border-border bg-card/80 px-5 backdrop-blur-sm sm:px-8">
           <div className="lg:hidden">
             <Logo />
           </div>
 
           {/* Search */}
-          <div className="hidden flex-1 items-center gap-2.5 rounded-[11px] border border-border bg-bg px-3.5 py-2.5 sm:flex sm:max-w-[440px]">
+          <div className="hidden flex-1 items-center gap-2.5 rounded-md border border-border bg-background px-3.5 py-2.5 sm:flex sm:max-w-[440px]">
             <Search className="size-4 text-text-muted" />
             <input
               placeholder="Search companies, news, or sectors"
@@ -56,7 +56,7 @@ export default async function DashboardLayout({
           <div className="ml-auto flex items-center gap-2.5">
             <button
               aria-label="Notifications"
-              className="relative grid size-10 place-items-center rounded-[11px] border border-border bg-card text-text-secondary transition-colors hover:text-foreground"
+              className="relative grid size-10 place-items-center rounded-md border border-border bg-card text-text-secondary transition-colors hover:text-foreground"
             >
               <Bell className="size-[18px]" />
               <span className="absolute right-2 top-2 size-2 rounded-full bg-down" />
@@ -73,7 +73,7 @@ export default async function DashboardLayout({
           </div>
         </header>
 
-        <main className="flex-1 p-5 sm:p-8">{children}</main>
+        <main className="flex-1 p-6 sm:p-10">{children}</main>
       </div>
     </div>
   );
