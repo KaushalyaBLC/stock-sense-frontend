@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowLeft, User, Bell, ShieldCheck } from "lucide-react";
+import { ArrowLeft, User, Mail, Bell, ShieldCheck } from "lucide-react";
 import { LogoutButton } from "@/components/dashboard/logout-button";
+import { DigestToggle } from "@/components/dashboard/digest-toggle";
 import { Reveal } from "@/components/reveal";
 import { getCurrentUser } from "@/lib/server-auth";
 
@@ -44,8 +45,17 @@ export default async function SettingsPage() {
         </div>
       </Reveal>
 
-      {/* Preferences (coming soon) */}
+      {/* Email digest (real) */}
       <Reveal delay={0.06} className="mt-4 rounded-[10px] border border-border bg-card p-6">
+        <div className="mb-4 flex items-center gap-2">
+          <Mail className="size-[17px] text-primary" />
+          <h2 className="text-[14px] font-semibold tracking-tight">Email digest</h2>
+        </div>
+        <DigestToggle />
+      </Reveal>
+
+      {/* Preferences (coming soon) */}
+      <Reveal delay={0.1} className="mt-4 rounded-[10px] border border-border bg-card p-6">
         <div className="mb-1 flex items-center gap-2">
           <Bell className="size-[17px] text-primary" />
           <h2 className="text-[14px] font-semibold tracking-tight">Notifications</h2>
@@ -58,7 +68,7 @@ export default async function SettingsPage() {
         </p>
       </Reveal>
 
-      <Reveal delay={0.1} className="mt-4 rounded-[10px] border border-border bg-card p-6">
+      <Reveal delay={0.14} className="mt-4 rounded-[10px] border border-border bg-card p-6">
         <div className="mb-1 flex items-center gap-2">
           <ShieldCheck className="size-[17px] text-primary" />
           <h2 className="text-[14px] font-semibold tracking-tight">Security</h2>

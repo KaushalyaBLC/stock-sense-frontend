@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import { authApi } from "./auth-api";
 import { marketApi } from "./market-api";
 import { chatApi } from "./chat-api";
+import { digestApi } from "./digest-api";
 import { authReducer } from "./auth-slice";
 
 export const makeStore = () =>
@@ -11,12 +12,14 @@ export const makeStore = () =>
       [authApi.reducerPath]: authApi.reducer,
       [marketApi.reducerPath]: marketApi.reducer,
       [chatApi.reducerPath]: chatApi.reducer,
+      [digestApi.reducerPath]: digestApi.reducer,
     },
     middleware: (getDefault) =>
       getDefault().concat(
         authApi.middleware,
         marketApi.middleware,
         chatApi.middleware,
+        digestApi.middleware,
       ),
   });
 
