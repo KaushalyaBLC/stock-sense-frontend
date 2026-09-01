@@ -78,31 +78,31 @@ export function PriceChart({ data, range, onRangeChange }: Props) {
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
           <div className="flex items-baseline gap-2.5">
-            <span className="text-3xl font-semibold tracking-tight tabular-nums">
+            <span className="font-mono text-[30px] font-semibold leading-none tracking-tight tabular-nums">
               {fmt(last)}
             </span>
-            <span className="text-sm text-text-secondary">LKR</span>
+            <span className="text-[13px] text-text-secondary">LKR</span>
           </div>
-          <div className={cn("mt-1 flex items-center gap-1 text-sm font-medium",
+          <div className={cn("mt-1.5 flex items-center gap-1 font-mono text-[13px] font-medium",
             isNeutral ? "text-text-secondary" : isPos ? "text-up-strong" : "text-down-strong"
           )}>
             {isNeutral ? <Minus className="size-3.5" /> : isPos ? <TrendingUp className="size-3.5" /> : <TrendingDown className="size-3.5" />}
             <span>{isPos && !isNeutral ? "+" : ""}{fmt(change)}</span>
             <span>({isPos && !isNeutral ? "+" : ""}{changePct.toFixed(2)}%)</span>
-            <span className="ml-1 text-text-muted font-normal">over {range}</span>
+            <span className="ml-1 font-sans font-normal text-text-muted">over {range}</span>
           </div>
         </div>
 
         {/* Range picker */}
-        <div className="flex items-center gap-1 rounded-md border border-border bg-surface-2 p-1">
+        <div className="flex items-center gap-1 rounded-[7px] border border-border bg-surface-2 p-1">
           {RANGE_OPTIONS.map((opt) => (
             <button
               key={opt.value}
               onClick={() => onRangeChange(opt.value)}
               className={cn(
-                "rounded-sm px-3 py-1 text-[12.5px] font-medium transition-colors",
+                "rounded-[5px] px-3 py-1 text-[12.5px] font-medium transition-colors",
                 range === opt.value
-                  ? "bg-card text-foreground shadow-sm"
+                  ? "bg-card text-foreground shadow-[0_1px_0_0_var(--border)]"
                   : "text-text-secondary hover:text-foreground",
               )}
             >
@@ -119,7 +119,7 @@ export function PriceChart({ data, range, onRangeChange }: Props) {
             key={t}
             onClick={() => setTab(t)}
             className={cn(
-              "pb-2 px-1 text-[12.5px] font-medium capitalize transition-colors border-b-2 -mb-px",
+              "-mb-px border-b-2 px-1 pb-2 text-[12.5px] font-medium capitalize transition-colors",
               tab === t
                 ? "border-primary text-primary"
                 : "border-transparent text-text-secondary hover:text-foreground",
@@ -224,9 +224,12 @@ export function PriceChart({ data, range, onRangeChange }: Props) {
           { label: "Avg Volume", value: fmtVol(avgVol) },
           { label: "Data Points", value: `${points.length} days` },
         ].map(({ label, value }) => (
-          <div key={label} className="rounded-md border border-border bg-surface-2 px-3 py-2.5">
+          <div
+            key={label}
+            className="rounded-[7px] border border-border bg-surface-2 px-3 py-2.5 transition-colors duration-200 hover:border-primary/25"
+          >
             <p className="text-[11px] text-text-muted">{label}</p>
-            <p className="mt-0.5 text-[13.5px] font-semibold tabular-nums">{value}</p>
+            <p className="mt-0.5 font-mono text-[13.5px] font-semibold tabular-nums">{value}</p>
           </div>
         ))}
       </div>

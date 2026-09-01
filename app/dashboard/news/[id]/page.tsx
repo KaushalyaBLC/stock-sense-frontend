@@ -10,6 +10,7 @@ import {
   TriangleAlert,
 } from "lucide-react";
 import { SignalBadge, MetaChip } from "@/components/dashboard/signal-badge";
+import { Reveal } from "@/components/reveal";
 import { confidenceLabel, riskLabel, plainMeaning } from "@/lib/plain-language";
 import { getNewsDetail } from "@/lib/server-market";
 import { symbolFull } from "@/lib/dashboard-data";
@@ -33,13 +34,13 @@ export default async function NewsAnalysisPage({
     <div className="mx-auto max-w-[900px]">
       <Link
         href="/dashboard"
-        className="mb-6 inline-flex items-center gap-1.5 text-sm text-text-secondary transition-colors hover:text-foreground"
+        className="mb-6 inline-flex items-center gap-1.5 text-[13.5px] text-text-secondary transition-colors hover:text-foreground"
       >
         <ArrowLeft className="size-4" /> Back to dashboard
       </Link>
 
       {/* Header */}
-      <div className="rounded-xl border border-border bg-card p-6">
+      <Reveal className="rounded-[10px] border border-border bg-card p-6">
         <div className="mb-3 flex flex-wrap items-center gap-2 text-[12.5px] text-text-muted">
           <span className="font-medium">{detail.source}</span>
           {detail.published_at && <span>· {detail.published_at}</span>}
@@ -56,7 +57,7 @@ export default async function NewsAnalysisPage({
           )}
         </div>
 
-        <h1 className="text-2xl font-bold leading-tight tracking-tight">
+        <h1 className="text-[22px] font-semibold leading-tight tracking-tight">
           {detail.title}
         </h1>
 
@@ -78,17 +79,17 @@ export default async function NewsAnalysisPage({
             href={detail.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-4 inline-flex items-center gap-1.5 text-[13px] font-semibold text-primary hover:underline"
+            className="mt-4 inline-flex items-center gap-1.5 text-[13px] font-medium text-primary hover:underline"
           >
             Read original article <ExternalLink className="size-3.5" />
           </a>
         )}
-      </div>
+      </Reveal>
 
       {/* AI summary / reasoning */}
       {detail.classification_reasoning && (
-        <Section title="AI Analysis" icon={ListChecks}>
-          <p className="text-sm leading-relaxed text-text-secondary">
+        <Section title="AI Analysis" icon={ListChecks} delay={0.06}>
+          <p className="text-[13.5px] leading-relaxed text-text-secondary">
             {detail.classification_reasoning}
           </p>
         </Section>
@@ -96,8 +97,8 @@ export default async function NewsAnalysisPage({
 
       {/* Macro context */}
       {detail.macro_context && (
-        <Section title="Macro Context" icon={Globe}>
-          <p className="text-sm leading-relaxed text-text-secondary">
+        <Section title="Macro Context" icon={Globe} delay={0.1}>
+          <p className="text-[13.5px] leading-relaxed text-text-secondary">
             {detail.macro_context}
           </p>
         </Section>
@@ -105,10 +106,10 @@ export default async function NewsAnalysisPage({
 
       {/* Affected companies */}
       {detail.companies.length > 0 && (
-        <Section title="Affected Companies" icon={TrendingUp}>
+        <Section title="Affected Companies" icon={TrendingUp} delay={0.14}>
           <div className="flex flex-col gap-3">
-            {detail.companies.map((c) => (
-              <CompanyImpact key={c.ticker} c={c} />
+            {detail.companies.map((c, i) => (
+              <CompanyImpact key={c.ticker} c={c} delay={i * 0.06} />
             ))}
           </div>
         </Section>
@@ -116,7 +117,7 @@ export default async function NewsAnalysisPage({
 
       {/* Decision trail */}
       {trailSteps.length > 0 && (
-        <Section title="Decision Trail" icon={ListChecks}>
+        <Section title="Decision Trail" icon={ListChecks} delay={0.18}>
           <p className="mb-4 text-[13px] text-text-secondary">
             How the AI reached its conclusion, step by step.
           </p>
@@ -144,7 +145,7 @@ export default async function NewsAnalysisPage({
       )}
 
       {/* Disclaimer */}
-      <div className="mt-6 flex items-center gap-2 rounded-lg border border-warn/30 bg-warn/[0.08] px-4 py-3 text-[12.5px] text-text-secondary">
+      <div className="mt-6 flex items-center gap-2.5 rounded-[10px] border border-warn/25 bg-warn/[0.06] px-4 py-3 text-[12.5px] text-text-secondary">
         <TriangleAlert className="size-4 shrink-0 text-warn" />
         StockSense provides AI-powered decision support only. It is not financial advice.
       </div>
@@ -156,24 +157,27 @@ function Section({
   title,
   icon: Icon,
   children,
+  delay = 0,
 }: {
   title: string;
   icon: typeof ListChecks;
   children: React.ReactNode;
+  delay?: number;
 }) {
   return (
-    <section className="mt-6 rounded-xl border border-border bg-card p-6">
+    <Reveal delay={delay} className="mt-6 rounded-[10px] border border-border bg-card p-6">
       <div className="mb-4 flex items-center gap-2">
-        <Icon className="size-[18px] text-primary" />
-        <h2 className="text-base font-semibold">{title}</h2>
+        <Icon className="size-[17px] text-primary" />
+        <h2 className="text-[14px] font-semibold tracking-tight">{title}</h2>
       </div>
       {children}
-    </section>
+    </Reveal>
   );
 }
 
 function CompanyImpact({
   c,
+  delay = 0,
 }: {
   c: {
     ticker: string;
@@ -188,21 +192,25 @@ function CompanyImpact({
     bear_case: string | null;
     time_horizon: string | null;
   };
+  delay?: number;
 }) {
   const riskTone = c.risk === "High" ? "red" : c.risk === "Medium" ? "amber" : "muted";
   return (
-    <div className="rounded-lg border border-border bg-surface-2/50 p-4">
+    <Reveal
+      delay={delay}
+      className="rounded-[10px] border border-border bg-surface-2/40 p-4 transition-all duration-300 hover:-translate-y-1 hover:border-primary/25 hover:shadow-[0_1px_0_0_var(--border),0_16px_36px_-16px_rgba(15,23,42,0.14)]"
+    >
       <div className="flex items-start justify-between gap-2.5">
         <div className="min-w-0">
-          <div className="text-[14.5px] font-semibold">{c.company}</div>
-          <div className="font-mono text-xs text-text-muted">
+          <div className="text-[14px] font-semibold tracking-tight">{c.company}</div>
+          <div className="mt-0.5 font-mono text-[11.5px] text-text-muted">
             {symbolFull(c.ticker)} · {c.sector}
           </div>
         </div>
         <SignalBadge sig={c.signal} />
       </div>
 
-      <div className="my-3 flex flex-wrap gap-2">
+      <div className="my-3 flex flex-wrap gap-1.5">
         <MetaChip tone={c.confidence >= 75 ? "brand" : "muted"}>
           {c.confidence}% · {confidenceLabel(c.confidence)}
         </MetaChip>
@@ -212,7 +220,7 @@ function CompanyImpact({
       </div>
 
       {/* Plain-language takeaway */}
-      <p className="mb-2 rounded-md bg-brand-soft/60 px-3 py-2 text-[12.5px] font-medium text-foreground">
+      <p className="mb-2 rounded-[7px] bg-brand-soft/60 px-3 py-2 text-[12.5px] font-medium text-foreground">
         {plainMeaning({ company: c.company, sig: c.signal, confidence: c.confidence })}
       </p>
 
@@ -221,7 +229,7 @@ function CompanyImpact({
       {(c.bull_case || c.bear_case) && (
         <div className="mt-3 grid gap-2 sm:grid-cols-2">
           {c.bull_case && (
-            <div className="rounded-md border border-up/20 bg-up/[0.06] p-3">
+            <div className="rounded-[7px] border border-up/20 bg-up/[0.06] p-3">
               <div className="mb-1 flex items-center gap-1.5 text-[11.5px] font-semibold text-up-strong">
                 <TrendingUp className="size-3.5" /> Best case
               </div>
@@ -231,7 +239,7 @@ function CompanyImpact({
             </div>
           )}
           {c.bear_case && (
-            <div className="rounded-md border border-down/20 bg-down/[0.06] p-3">
+            <div className="rounded-[7px] border border-down/20 bg-down/[0.06] p-3">
               <div className="mb-1 flex items-center gap-1.5 text-[11.5px] font-semibold text-down-strong">
                 <TrendingDown className="size-3.5" /> Worst case
               </div>
@@ -242,6 +250,6 @@ function CompanyImpact({
           )}
         </div>
       )}
-    </div>
+    </Reveal>
   );
 }

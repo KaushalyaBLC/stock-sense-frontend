@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import {
   ArrowLeft,
-  Sparkles,
   Newspaper,
   Building2,
   ShieldCheck,
@@ -11,10 +10,11 @@ import {
   TriangleAlert,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { SignalBadge, MetaChip } from "@/components/dashboard/signal-badge";
-import { confidenceLabel, riskLabel } from "@/lib/plain-language";
+import { Reveal } from "@/components/reveal";
+import { SummaryBrief } from "@/components/dashboard/summary-brief";
+import { SummarySignalRow } from "@/components/dashboard/summary-signal-row";
+import { NewsStrip } from "@/components/dashboard/news-strip";
 import { getOverview, getSignals, getNews } from "@/lib/server-market";
-import { symbolFull } from "@/lib/dashboard-data";
 
 export const metadata: Metadata = { title: "Weekly Market Summary - StockSense" };
 
@@ -51,122 +51,133 @@ export default async function DailySummaryPage() {
     .map(([name, v]) => ({ name, ...v, total: v.pos + v.neg }))
     .filter((s) => s.total > 0)
     .sort((a, b) => b.total - a.total);
+  const maxSectorTotal = Math.max(1, ...sectors.map((s) => s.total));
+
+  const newsItems = (news ?? []).map((n) => ({
+    id: n.id,
+    title: n.title,
+    source: n.source,
+    time: n.time,
+    signal: n.signal,
+    summary: n.summary,
+  }));
 
   return (
-    <div className="mx-auto max-w-[920px]">
+    <div className="mx-auto max-w-[1000px]">
       <Link
         href="/dashboard"
-        className="mb-6 inline-flex items-center gap-1.5 text-sm text-text-secondary transition-colors hover:text-foreground"
+        className="mb-6 inline-flex items-center gap-1.5 text-[13.5px] text-text-secondary transition-colors hover:text-foreground"
       >
         <ArrowLeft className="size-4" /> Back to dashboard
       </Link>
 
-      <div className="mb-1 text-sm font-medium text-text-muted">{today()}</div>
-      <h1 className="text-[28px] font-semibold tracking-tight">
-        Weekly Market Summary
-      </h1>
-      <p className="mt-1.5 text-sm text-text-secondary">
+      <div className="mb-1 text-[13px] font-medium text-text-muted">{today()}</div>
+      <h1 className="text-[26px] font-semibold tracking-tight">Weekly Market Summary</h1>
+      <p className="mt-1.5 text-[14px] text-text-secondary">
         Your AI brief of this week&apos;s CSE signals, sectors, and news.
       </p>
 
       {/* Brief hero */}
-      <div className="mt-6 overflow-hidden rounded-xl bg-navy p-6 sm:p-7">
-        <div className="mb-3 flex items-center gap-2.5">
-          <span className="grid size-7 place-items-center rounded-md bg-primary/25 text-blue-400">
-            <Sparkles className="size-4" />
-          </span>
-          <span className="text-[15px] font-semibold text-white">AI Market Brief</span>
-        </div>
-        <div className="mb-2 text-2xl font-semibold text-white">
-          Market mood:{" "}
-          <span className="text-amber-400">{brief?.mood ?? "Mixed"}</span>
-        </div>
-        <p className="max-w-2xl text-[15px] leading-relaxed text-slate-300">
-          {brief?.summary ?? "No summary available yet."}
-        </p>
-        <div className="mt-4 flex flex-wrap gap-2">
-          {(brief?.badges ?? []).map((b) => (
-            <span
-              key={b}
-              className="rounded-full border border-white/10 bg-white/[0.08] px-2.5 py-1 text-xs font-semibold text-slate-200"
-            >
-              {b}
-            </span>
-          ))}
-        </div>
-      </div>
+      <SummaryBrief
+        mood={brief?.mood ?? "Mixed"}
+        summary={brief?.summary ?? "No summary available yet."}
+        badges={brief?.badges ?? []}
+      />
 
-      {/* Metrics */}
-      <div className="mt-6 grid grid-cols-2 gap-4 lg:grid-cols-4">
-        <Stat label="News Analyzed This Week" value={metrics?.news_analyzed_week} icon={Newspaper} />
-        <Stat label="Companies Affected" value={metrics?.companies_affected} icon={Building2} />
-        <Stat label="Positive Signals" value={positives.length} icon={TrendingUp} tone="up" />
-        <Stat label="High Confidence" value={metrics?.high_confidence_signals} icon={ShieldCheck} />
+      {/* Metrics - bento layout, one featured cell */}
+      <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <Reveal className="sm:col-span-2 lg:col-span-2">
+          <FeaturedStat
+            label="Positive signals this week"
+            value={positives.length}
+            icon={TrendingUp}
+            tone="up"
+          />
+        </Reveal>
+        <Reveal delay={0.06}>
+          <Stat label="News analyzed" value={metrics?.news_analyzed_week} icon={Newspaper} />
+        </Reveal>
+        <Reveal delay={0.1}>
+          <Stat label="Companies affected" value={metrics?.companies_affected} icon={Building2} />
+        </Reveal>
+        <Reveal delay={0.14} className="sm:col-span-2 lg:col-span-4">
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-2">
+            <Stat label="High confidence" value={metrics?.high_confidence_signals} icon={ShieldCheck} />
+            <Stat
+              label="Negative signals this week"
+              value={negatives.length}
+              icon={TrendingDown}
+              tone="down"
+            />
+          </div>
+        </Reveal>
       </div>
 
       {/* Sector rollup */}
       {sectors.length > 0 && (
-        <Card title="Sectors in focus">
-          <div className="flex flex-col divide-y divide-border">
-            {sectors.map((s) => (
-              <div key={s.name} className="flex items-center justify-between py-2.5">
-                <span className="text-sm font-medium">{s.name}</span>
-                <div className="flex items-center gap-3 font-mono text-xs">
-                  {s.pos > 0 && (
-                    <span className="text-up-strong">▲ {s.pos}</span>
-                  )}
-                  {s.neg > 0 && (
-                    <span className="text-down-strong">▼ {s.neg}</span>
-                  )}
+        <Reveal delay={0.06} className="mt-8">
+          <Card title="Sectors in focus">
+            <div className="flex flex-col gap-3">
+              {sectors.map((s) => (
+                <div key={s.name}>
+                  <div className="mb-1.5 flex items-center justify-between text-[13px]">
+                    <span className="font-medium">{s.name}</span>
+                    <span className="flex items-center gap-3 font-mono text-xs">
+                      {s.pos > 0 && <span className="text-up-strong">▲ {s.pos}</span>}
+                      {s.neg > 0 && <span className="text-down-strong">▼ {s.neg}</span>}
+                    </span>
+                  </div>
+                  <div className="flex h-1.5 overflow-hidden rounded-full bg-surface-2">
+                    {s.pos > 0 && (
+                      <div
+                        className="h-full bg-up"
+                        style={{ width: `${(s.pos / maxSectorTotal) * 100}%` }}
+                      />
+                    )}
+                    {s.neg > 0 && (
+                      <div
+                        className="h-full bg-down"
+                        style={{ width: `${(s.neg / maxSectorTotal) * 100}%` }}
+                      />
+                    )}
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
-        </Card>
+              ))}
+            </div>
+          </Card>
+        </Reveal>
       )}
 
       {/* Signals: positive + negative */}
-      <div className="mt-6 grid gap-6 lg:grid-cols-2">
+      <div className="mt-8 grid gap-6 lg:grid-cols-2">
         <SignalColumn title="Positive Signals" tone="up" items={positives} />
         <SignalColumn title="Negative Signals" tone="down" items={negatives} />
       </div>
 
       {/* This week's news */}
-      {news && news.length > 0 && (
-        <Card title="This Week's Analyzed News">
-          <div className="flex flex-col gap-2.5">
-            {news.map((n) => (
-              <Link
-                key={n.id}
-                href={`/dashboard/news/${n.id}`}
-                className="flex items-start gap-3 rounded-md border border-border bg-surface-2/40 p-3 transition-colors hover:border-primary/30"
-              >
-                <SignalBadge sig={n.signal} className="mt-0.5 shrink-0 px-2 py-0.5" />
-                <div className="min-w-0">
-                  <div className="text-[13.5px] font-semibold">{n.title}</div>
-                  <div className="text-[12px] text-text-muted">
-                    {n.source}
-                    {n.time ? ` · ${n.time}` : ""}
-                  </div>
-                </div>
-              </Link>
-            ))}
+      {newsItems.length > 0 && (
+        <Reveal delay={0.1} className="mt-8">
+          <div className="mb-3.5 text-[13px] font-semibold tracking-tight">
+            This Week&apos;s Analyzed News
           </div>
-        </Card>
+          <NewsStrip items={newsItems} />
+        </Reveal>
       )}
 
       {/* Subscribe nudge */}
-      <div className="mt-6 flex flex-wrap items-center justify-between gap-3.5 rounded-xl border border-border bg-gradient-to-r from-card to-surface-2 p-6">
+      <Reveal className="mt-8 flex flex-wrap items-center justify-between gap-4 rounded-[10px] border border-border bg-card p-6">
         <div>
-          <div className="text-base font-semibold">Get this summary every morning.</div>
-          <div className="mt-1 text-[13.5px] text-text-secondary">
+          <div className="text-[14.5px] font-semibold tracking-tight">
+            Get this summary every morning.
+          </div>
+          <div className="mt-1 text-[13px] text-text-secondary">
             We&apos;ll send the brief, top signals, and watchlist updates to your inbox.
           </div>
         </div>
         <Button>Subscribe</Button>
-      </div>
+      </Reveal>
 
-      <div className="mt-5 flex items-center gap-2 rounded-lg border border-warn/30 bg-warn/[0.08] px-4 py-3 text-[12.5px] text-text-secondary">
+      <div className="mt-5 flex items-center gap-2.5 rounded-[10px] border border-warn/25 bg-warn/[0.06] px-4 py-3 text-[12.5px] text-text-secondary">
         <TriangleAlert className="size-4 shrink-0 text-warn" />
         StockSense provides AI-powered decision support only. It is not financial advice.
       </div>
@@ -183,22 +194,54 @@ function Stat({
   label: string;
   value: number | undefined;
   icon: typeof Newspaper;
-  tone?: "up";
+  tone?: "up" | "down";
 }) {
+  const accent =
+    tone === "up"
+      ? "bg-up/10 text-up-strong"
+      : tone === "down"
+        ? "bg-down/10 text-down-strong"
+        : "bg-brand-soft text-primary";
+
   return (
-    <div className="rounded-lg border border-border bg-card p-5">
+    <div className="flex h-full flex-col justify-between rounded-[10px] border border-border bg-card p-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_1px_0_0_var(--border),0_16px_40px_-16px_rgba(15,23,42,0.14)]">
       <div className="flex items-center justify-between">
-        <span className="text-[12.5px] font-medium text-text-secondary">{label}</span>
-        <span
-          className={`grid size-[34px] place-items-center rounded-md ${
-            tone === "up" ? "bg-up/12 text-up-strong" : "bg-brand-soft text-primary"
-          }`}
-        >
-          <Icon className="size-[18px]" />
+        <span className="text-[12px] font-medium text-text-secondary">{label}</span>
+        <span className={`grid size-8 place-items-center rounded-md ${accent}`}>
+          <Icon className="size-[17px]" />
         </span>
       </div>
-      <div className="mt-2.5 font-mono text-[30px] font-semibold tracking-tight">
-        {value ?? "-"}
+      <div className="font-mono text-[28px] font-semibold leading-none tracking-tight">
+        {value ?? "—"}
+      </div>
+    </div>
+  );
+}
+
+function FeaturedStat({
+  label,
+  value,
+  icon: Icon,
+  tone,
+}: {
+  label: string;
+  value: number;
+  icon: typeof Newspaper;
+  tone: "up" | "down";
+}) {
+  const accent = tone === "up" ? "bg-up/10 text-up-strong" : "bg-down/10 text-down-strong";
+  const textColor = tone === "up" ? "text-up-strong" : "text-down-strong";
+
+  return (
+    <div className="flex h-full flex-col justify-between rounded-[10px] border border-border bg-card p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_1px_0_0_var(--border),0_20px_48px_-16px_rgba(15,23,42,0.16)]">
+      <div className="flex items-center justify-between">
+        <span className="text-[12px] font-medium text-text-secondary">{label}</span>
+        <span className={`grid size-8 place-items-center rounded-md ${accent}`}>
+          <Icon className="size-[17px]" />
+        </span>
+      </div>
+      <div className={`font-mono text-[40px] font-semibold leading-none tracking-tight ${textColor}`}>
+        {value}
       </div>
     </div>
   );
@@ -206,8 +249,8 @@ function Stat({
 
 function Card({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <section className="mt-6 rounded-xl border border-border bg-card p-6">
-      <h2 className="mb-4 text-base font-semibold">{title}</h2>
+    <section className="rounded-[10px] border border-border bg-card p-6">
+      <h2 className="mb-4 text-[13px] font-semibold tracking-tight">{title}</h2>
       {children}
     </section>
   );
@@ -233,41 +276,19 @@ function SignalColumn({
   const Icon = tone === "up" ? TrendingUp : TrendingDown;
   return (
     <div>
-      <div className="mb-3 flex items-center gap-2">
+      <div className="mb-3.5 flex items-center gap-2">
         <Icon className={`size-4 ${tone === "up" ? "text-up-strong" : "text-down-strong"}`} />
-        <span className="text-base font-semibold">{title}</span>
-        <span className="font-mono text-sm text-text-muted">({items.length})</span>
+        <span className="text-[13px] font-semibold tracking-tight">{title}</span>
+        <span className="font-mono text-xs text-text-muted">({items.length})</span>
       </div>
       <div className="flex flex-col gap-2.5">
         {items.length === 0 ? (
-          <div className="rounded-lg border border-dashed border-border bg-surface/50 p-5 text-center text-[13px] text-text-secondary">
+          <div className="rounded-[10px] border border-dashed border-border bg-surface/50 p-5 text-center text-[13px] text-text-secondary">
             None today.
           </div>
         ) : (
-          items.map((s) => (
-            <Link
-              key={s.ticker}
-              href={`/dashboard/news/${s.article_id}`}
-              className="rounded-lg border border-border bg-card p-3.5 transition-colors hover:border-primary/30"
-            >
-              <div className="flex items-start justify-between gap-2">
-                <div className="min-w-0">
-                  <div className="truncate text-[13.5px] font-semibold">{s.company}</div>
-                  <div className="font-mono text-[11.5px] text-text-muted">
-                    {symbolFull(s.ticker)} · {s.sector}
-                  </div>
-                </div>
-                <SignalBadge sig={s.signal} />
-              </div>
-              <div className="mt-2.5 flex gap-2">
-                <MetaChip tone={s.confidence >= 75 ? "brand" : "muted"}>
-                  {s.confidence}% · {confidenceLabel(s.confidence)}
-                </MetaChip>
-                <MetaChip tone={s.risk === "High" ? "red" : s.risk === "Medium" ? "amber" : "muted"}>
-                  {riskLabel(s.risk)}
-                </MetaChip>
-              </div>
-            </Link>
+          items.map((s, i) => (
+            <SummarySignalRow key={s.ticker} item={s} delay={i * 0.06} />
           ))
         )}
       </div>

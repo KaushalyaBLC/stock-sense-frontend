@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { motion, useReducedMotion } from "motion/react";
 import {
   LayoutDashboard,
   Eye,
@@ -26,12 +27,12 @@ const ITEMS: { label: string; href: string; icon: LucideIcon }[] = [
   { label: "Settings", href: "/dashboard/settings", icon: Settings },
 ];
 
-
 export function SidebarNav() {
   const pathname = usePathname();
+  const reduce = useReducedMotion();
 
   return (
-    <nav className="flex flex-col gap-1">
+    <nav className="flex flex-col gap-0.5">
       {ITEMS.map((item) => {
         const active =
           item.href === "/dashboard"
@@ -42,15 +43,42 @@ export function SidebarNav() {
           <Link
             key={item.href}
             href={item.href}
+            aria-current={active ? "page" : undefined}
             className={cn(
-              "flex items-center gap-2.5 rounded-[6px] px-3 py-2 text-sm transition-colors",
+              "group relative flex items-center gap-2.5 rounded-[7px] px-3 py-2 text-[13.5px] transition-colors duration-150",
               active
-                ? "bg-brand-soft font-medium text-primary"
-                : "text-text-secondary hover:bg-surface-2 hover:text-foreground",
+                ? "font-medium text-primary"
+                : "font-normal text-text-secondary hover:bg-surface-2 hover:text-foreground",
             )}
           >
-            <Icon className="size-4" />
-            {item.label}
+            {active && (
+              <motion.span
+                layoutId="sidebar-active-pill"
+                className="absolute inset-0 rounded-[7px] bg-brand-soft"
+                transition={
+                  reduce
+                    ? { duration: 0 }
+                    : { type: "spring", stiffness: 380, damping: 32 }
+                }
+              />
+            )}
+            <span
+              aria-hidden
+              className={cn(
+                "relative z-10 h-4 w-[2.5px] rounded-full bg-primary transition-opacity duration-150",
+                active ? "opacity-100" : "opacity-0",
+              )}
+            />
+            <Icon
+              className={cn(
+                "relative z-10 size-4 shrink-0 transition-all duration-150",
+                active
+                  ? "text-primary"
+                  : "text-text-muted group-hover:translate-x-0.5 group-hover:text-text-secondary",
+              )}
+              strokeWidth={active ? 2.25 : 1.75}
+            />
+            <span className="relative z-10">{item.label}</span>
           </Link>
         );
       })}

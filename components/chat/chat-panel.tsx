@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { motion, useReducedMotion, AnimatePresence } from "motion/react";
 import { Send, Loader2, Sparkles, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { ChatTurn } from "@/lib/store/chat-api";
@@ -31,6 +32,7 @@ export function ChatPanel({
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const reduce = useReducedMotion();
 
   const scrollToEnd = () => {
     requestAnimationFrame(() => {
@@ -81,35 +83,45 @@ export function ChatPanel({
   const empty = messages.length === 0;
 
   return (
-    <div className="flex h-[calc(100dvh-9rem)] flex-col rounded-xl border border-border bg-card">
+    <div className="flex h-[calc(100dvh-9rem)] flex-col rounded-[10px] border border-border bg-card">
       {/* Messages */}
       <div ref={scrollRef} className="flex-1 overflow-y-auto p-4 sm:p-6">
         {empty ? (
-          <div className="mx-auto flex h-full max-w-md flex-col items-center justify-center text-center">
-            <span className="grid size-14 place-items-center rounded-lg bg-brand-soft text-primary">
+          <motion.div
+            initial={reduce ? false : { opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+            className="mx-auto flex h-full max-w-md flex-col items-center justify-center text-center"
+          >
+            <span className="grid size-14 place-items-center rounded-[10px] bg-brand-soft text-primary">
               <Sparkles className="size-7" />
             </span>
-            <h2 className="mt-4 text-lg font-semibold tracking-tight">{emptyTitle}</h2>
-            <p className="mt-2 text-sm text-text-secondary">{emptyBody}</p>
+            <h2 className="mt-4 text-[17px] font-semibold tracking-tight">{emptyTitle}</h2>
+            <p className="mt-2 text-[13.5px] leading-relaxed text-text-secondary">{emptyBody}</p>
             {suggestions.length > 0 && (
               <div className="mt-6 flex flex-wrap justify-center gap-2">
-                {suggestions.map((s) => (
-                  <button
+                {suggestions.map((s, i) => (
+                  <motion.button
                     key={s}
+                    initial={reduce ? false : { opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.4, delay: 0.1 + i * 0.05, ease: [0.16, 1, 0.3, 1] }}
                     onClick={() => submit(s)}
-                    className="rounded-full border border-border bg-surface-2 px-3 py-1.5 text-[12.5px] font-medium text-text-secondary transition-colors hover:border-primary/40 hover:text-foreground"
+                    className="rounded-full border border-border bg-surface-2 px-3 py-1.5 text-[12.5px] font-medium text-text-secondary transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/30 hover:text-foreground"
                   >
                     {s}
-                  </button>
+                  </motion.button>
                 ))}
               </div>
             )}
-          </div>
+          </motion.div>
         ) : (
           <div className="mx-auto flex max-w-2xl flex-col gap-4">
-            {messages.map((m, i) => (
-              <MessageBubble key={i} message={m} />
-            ))}
+            <AnimatePresence initial={false}>
+              {messages.map((m, i) => (
+                <MessageBubble key={i} message={m} reduce={!!reduce} />
+              ))}
+            </AnimatePresence>
           </div>
         )}
       </div>
@@ -134,9 +146,14 @@ export function ChatPanel({
             }}
             rows={1}
             placeholder={placeholder}
-            className="max-h-32 min-h-[44px] flex-1 resize-none rounded-md border border-border bg-background px-3.5 py-2.5 text-sm outline-none placeholder:text-text-muted focus:border-primary"
+            className="max-h-32 min-h-[44px] flex-1 resize-none rounded-[7px] border border-border bg-background px-3.5 py-2.5 text-[13.5px] outline-none transition-colors placeholder:text-text-muted focus:border-primary/40"
           />
-          <Button type="submit" size="icon" className="size-11 shrink-0" disabled={busy || !input.trim()}>
+          <Button
+            type="submit"
+            size="icon"
+            className="size-11 shrink-0 rounded-[7px] transition-transform active:scale-[0.96]"
+            disabled={busy || !input.trim()}
+          >
             {busy ? <Loader2 className="size-4 animate-spin" /> : <Send className="size-4" />}
           </Button>
         </form>
@@ -148,10 +165,15 @@ export function ChatPanel({
   );
 }
 
-function MessageBubble({ message }: { message: Message }) {
+function MessageBubble({ message, reduce }: { message: Message; reduce: boolean }) {
   const isUser = message.role === "user";
   return (
-    <div className={cn("flex gap-3", isUser && "flex-row-reverse")}>
+    <motion.div
+      initial={reduce ? false : { opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+      className={cn("flex gap-3", isUser && "flex-row-reverse")}
+    >
       <span
         className={cn(
           "grid size-8 shrink-0 place-items-center rounded-full",
@@ -162,7 +184,7 @@ function MessageBubble({ message }: { message: Message }) {
       </span>
       <div
         className={cn(
-          "max-w-[80%] rounded-lg px-3.5 py-2.5 text-[13.5px] leading-relaxed",
+          "max-w-[80%] rounded-[10px] px-3.5 py-2.5 text-[13.5px] leading-relaxed",
           isUser
             ? "bg-primary text-primary-foreground"
             : message.error
@@ -171,8 +193,13 @@ function MessageBubble({ message }: { message: Message }) {
         )}
       >
         {message.pending ? (
-          <span className="inline-flex items-center gap-1.5 text-text-secondary">
-            <Loader2 className="size-3.5 animate-spin" /> Thinking...
+          <span className="inline-flex items-center gap-2 text-text-secondary">
+            <span className="flex gap-1">
+              <span className="size-1.5 animate-bounce rounded-full bg-text-muted [animation-delay:-0.3s]" />
+              <span className="size-1.5 animate-bounce rounded-full bg-text-muted [animation-delay:-0.15s]" />
+              <span className="size-1.5 animate-bounce rounded-full bg-text-muted" />
+            </span>
+            Thinking...
           </span>
         ) : isUser ? (
           <span className="whitespace-pre-wrap">{message.content}</span>
@@ -257,6 +284,6 @@ function MessageBubble({ message }: { message: Message }) {
           </div>
         )}
       </div>
-    </div>
+    </motion.div>
   );
 }

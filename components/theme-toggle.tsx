@@ -27,10 +27,10 @@ export function ThemeToggle() {
       onClick={toggle}
       aria-label="Toggle dark mode"
       suppressHydrationWarning
-      className="grid size-9 place-items-center rounded-[6px] border border-border bg-surface text-text-secondary transition-colors hover:text-foreground hover:bg-surface-2"
+      className="grid size-9 place-items-center rounded-[7px] border border-border bg-surface text-text-secondary transition-colors hover:border-primary/25 hover:bg-surface-2 hover:text-foreground"
     >
-      <Sun className="hidden size-[18px] dark:block" />
-      <Moon className="size-[18px] dark:hidden" />
+      <Sun className="hidden size-[17px] dark:block" />
+      <Moon className="size-[17px] dark:hidden" />
     </button>
   );
 }

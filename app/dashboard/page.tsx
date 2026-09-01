@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Sparkles, TriangleAlert } from "lucide-react";
+import { TriangleAlert } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { SignalBadge } from "@/components/dashboard/signal-badge";
 import { CompanySignalCard } from "@/components/dashboard/company-signal-card";
 import { MetricTiles } from "@/components/dashboard/metric-tiles";
+import { MarketBrief } from "@/components/dashboard/market-brief";
+import { NewsStrip } from "@/components/dashboard/news-strip";
+import { Reveal } from "@/components/reveal";
 import { getCurrentUser } from "@/lib/server-auth";
 import { getOverview } from "@/lib/server-market";
 import {
@@ -69,65 +71,42 @@ export default async function DashboardPage() {
 
   return (
     <div className="mx-auto max-w-[1200px]">
-      <div className="mb-6">
-        <h1 className="text-[28px] font-semibold tracking-tight">
+      <Reveal className="mb-8">
+        <h1 className="text-[26px] font-semibold tracking-tight">
           Good morning, {firstName}
         </h1>
-        <p className="mt-1.5 text-sm text-text-secondary">
+        <p className="mt-1.5 text-[14px] text-text-secondary">
           Here&apos;s what AI found in the market this week.
         </p>
-      </div>
+      </Reveal>
 
       {/* A. Market Brief */}
-      <div className="mb-6 overflow-hidden rounded-xl bg-navy p-6 sm:p-7">
-        <div className="flex flex-wrap items-start justify-between gap-4">
-          <div className="max-w-2xl">
-            <div className="mb-3 flex items-center gap-2.5">
-              <span className="grid size-7 place-items-center rounded-md bg-primary/25 text-blue-400">
-                <Sparkles className="size-4" />
-              </span>
-              <span className="text-[15px] font-semibold text-white">
-                This Week&apos;s AI Market Brief
-              </span>
-            </div>
-            <div className="mb-2 text-xl font-semibold text-white">
-              Market mood:{" "}
-              <span className="text-amber-400">{brief?.mood ?? "Mixed"}</span>
-            </div>
-            <p className="text-sm leading-relaxed text-slate-300">
-              {brief?.summary ??
-                "Tourism-related companies show positive signals. The banking sector has mixed news impact."}
-            </p>
-            <div className="mt-4 flex flex-wrap gap-2">
-              {(brief?.badges ?? ["Mixed market mood", "Signals updated"]).map((b) => (
-                <span
-                  key={b}
-                  className="rounded-full border border-white/10 bg-white/[0.08] px-2.5 py-1 text-xs font-semibold text-slate-200"
-                >
-                  {b}
-                </span>
-              ))}
-            </div>
-          </div>
-          <Button className="whitespace-nowrap" asChild>
-            <Link href="/dashboard/summary">View Weekly Summary</Link>
-          </Button>
-        </div>
-      </div>
+      <MarketBrief
+        mood={brief?.mood ?? "Mixed"}
+        summary={
+          brief?.summary ??
+          "Tourism-related companies show positive signals. The banking sector has mixed news impact."
+        }
+        badges={brief?.badges ?? ["Mixed market mood", "Signals updated"]}
+        positiveCount={positives.length}
+        negativeCount={negatives.length}
+      />
 
-      {/* B. Metric tiles - outcome-first for general users */}
+      {/* B. Metric tiles - outcome-first for general users, bento layout */}
       <MetricTiles overview={overview} />
 
       {/* C/D. Signals two-column */}
-      <div className="mb-6 grid items-start gap-6 lg:grid-cols-2">
+      <div className="mb-8 grid items-start gap-6 lg:grid-cols-2">
         <div>
-          <div className="mb-3 flex items-center gap-2">
-            <span className="text-base font-semibold">Top Positive Signals</span>
-            <span className="size-2 rounded-full bg-up" aria-hidden />
+          <div className="mb-3.5 flex items-center gap-2">
+            <span className="size-1.5 rounded-full bg-up" aria-hidden />
+            <span className="text-[13px] font-semibold tracking-tight">Top Positive Signals</span>
           </div>
-          <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-2.5">
             {positives.length ? (
-              positives.map((c) => <CompanySignalCard key={c.sym} c={c} />)
+              positives.map((c, i) => (
+                <CompanySignalCard key={c.sym} c={c} delay={i * 0.08} />
+              ))
             ) : (
               <EmptyCard text="No positive signals yet." />
             )}
@@ -135,76 +114,54 @@ export default async function DashboardPage() {
         </div>
 
         <div>
-          <div className="mb-3 flex items-center gap-2">
-            <span className="text-base font-semibold">Top Negative Signals</span>
-            <span className="size-2 rounded-full bg-down" aria-hidden />
+          <div className="mb-3.5 flex items-center gap-2">
+            <span className="size-1.5 rounded-full bg-down" aria-hidden />
+            <span className="text-[13px] font-semibold tracking-tight">Top Negative Signals</span>
           </div>
-          <div className="flex flex-col gap-3">
-            {negatives.map((c) => (
-              <CompanySignalCard key={c.sym} c={c} />
+          <div className="flex flex-col gap-2.5">
+            {negatives.map((c, i) => (
+              <CompanySignalCard key={c.sym} c={c} delay={i * 0.08} />
             ))}
 
-            <div className="rounded-lg border border-border bg-card p-4">
-              <div className="mb-2.5 text-sm font-semibold">Watchlist Alerts</div>
-              <p className="text-[12.5px] text-text-secondary">
-                Add companies to your watchlist to get high-impact alerts here.
-              </p>
-            </div>
+            <Reveal delay={negatives.length * 0.08}>
+              <div className="rounded-[10px] border border-dashed border-border bg-surface/50 p-4">
+                <div className="mb-1.5 text-[13px] font-semibold">Watchlist Alerts</div>
+                <p className="text-[12.5px] leading-relaxed text-text-secondary">
+                  Add companies to your watchlist to get high-impact alerts here.
+                </p>
+              </div>
+            </Reveal>
           </div>
         </div>
       </div>
 
-      {/* F. Latest news */}
-      <div className="mb-3 flex items-center justify-between">
-        <span className="text-base font-semibold">Latest News</span>
-        <Link href="/dashboard/news" className="text-sm font-semibold text-primary hover:underline">
+      {/* F. Latest news - horizontal strip, a different layout family */}
+      <div className="mb-3.5 flex items-center justify-between">
+        <span className="text-[13px] font-semibold tracking-tight">Latest News</span>
+        <Link href="/dashboard/news" className="text-[13px] font-medium text-primary hover:underline">
           View all
         </Link>
       </div>
-      <div className="mb-6 flex flex-col gap-2.5">
-        {news.map((n) => (
-          <div
-            key={n.id}
-            className="flex flex-wrap items-start gap-3.5 rounded-lg border border-border bg-card p-4"
-          >
-            <div className="min-w-[200px] flex-1">
-              <div className="mb-1.5 flex items-center gap-2">
-                <SignalBadge sig={n.signal} className="px-2 py-0.5" />
-                <span className="text-[11.5px] text-text-muted">
-                  {n.source}
-                  {n.time ? ` · ${n.time}` : ""}
-                </span>
-              </div>
-              <div className="mb-1 text-[14.5px] font-semibold">{n.title}</div>
-              <div className="text-[12.5px] leading-relaxed text-text-secondary">
-                {n.summary}
-              </div>
-            </div>
-            <Button variant="outline" size="sm" className="whitespace-nowrap" asChild>
-              <Link href={`/dashboard/news/${n.id}`}>View Analysis</Link>
-            </Button>
-          </div>
-        ))}
+      <div className="mb-8">
+        <NewsStrip items={news} />
       </div>
 
       {/* G. Daily summary CTA */}
-      <div className="flex flex-wrap items-center justify-between gap-3.5 rounded-xl border border-border bg-gradient-to-r from-card to-surface-2 p-6">
+      <Reveal className="flex flex-wrap items-center justify-between gap-4 rounded-[10px] border border-border bg-card p-6">
         <div>
-          <div className="text-base font-semibold">
+          <div className="text-[14.5px] font-semibold tracking-tight">
             Get your AI market summary every morning.
           </div>
-          <div className="mt-1 text-[13.5px] text-text-secondary">
+          <div className="mt-1 text-[13px] text-text-secondary">
             Top signals, affected sectors, and watchlist updates in one simple brief.
           </div>
         </div>
-        <div className="flex gap-2.5">
-          <Button asChild>
-            <Link href="/dashboard/summary">View Weekly Summary</Link>
-          </Button>
-        </div>
-      </div>
+        <Button asChild>
+          <Link href="/dashboard/summary">View Weekly Summary</Link>
+        </Button>
+      </Reveal>
 
-      <div className="mt-5 flex items-center gap-2 rounded-lg border border-warn/30 bg-warn/[0.08] px-4 py-3 text-[12.5px] text-text-secondary">
+      <div className="mt-5 flex items-center gap-2.5 rounded-[10px] border border-warn/25 bg-warn/[0.06] px-4 py-3 text-[12.5px] text-text-secondary">
         <TriangleAlert className="size-4 shrink-0 text-warn" />
         StockSense provides AI-powered decision support only. It is not financial advice.
       </div>
@@ -214,7 +171,7 @@ export default async function DashboardPage() {
 
 function EmptyCard({ text }: { text: string }) {
   return (
-    <div className="rounded-lg border border-dashed border-border bg-surface/50 p-6 text-center text-[13px] text-text-secondary">
+    <div className="rounded-[10px] border border-dashed border-border bg-surface/50 p-6 text-center text-[13px] text-text-secondary">
       {text}
     </div>
   );

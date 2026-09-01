@@ -21,8 +21,8 @@ export default function ChatPage() {
   return (
     <div className="mx-auto max-w-[900px]">
       <div className="mb-6">
-        <h1 className="text-2xl font-semibold tracking-tight">AI Assistant</h1>
-        <p className="mt-1.5 text-sm text-text-secondary">
+        <h1 className="text-[26px] font-semibold tracking-tight">AI Assistant</h1>
+        <p className="mt-1.5 text-[14px] text-text-secondary">
           Ask anything about CSE companies and the news that moves them.
         </p>
       </div>

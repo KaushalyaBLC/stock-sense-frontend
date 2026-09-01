@@ -1,9 +1,10 @@
 import { redirect } from "next/navigation";
-import { Search, Bell } from "lucide-react";
+import { Search } from "lucide-react";
 import { Logo } from "@/components/logo";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { SidebarNav } from "@/components/dashboard/sidebar-nav";
 import { LogoutButton } from "@/components/dashboard/logout-button";
+import { NotificationBell } from "@/components/dashboard/notification-bell";
 import { getCurrentUser } from "@/lib/server-auth";
 
 export default async function DashboardLayout({
@@ -26,12 +27,12 @@ export default async function DashboardLayout({
     <div className="grid h-[100dvh] overflow-hidden lg:grid-cols-[260px_1fr]">
       {/* Sidebar - fixed height, scrolls independently if content overflows */}
       <aside className="hidden flex-col border-r border-border bg-surface overflow-y-auto lg:flex">
-        <div className="flex h-[72px] shrink-0 items-center border-b border-border px-6">
+        <div className="flex h-[68px] shrink-0 items-center border-b border-border px-6">
           <Logo />
         </div>
-        <div className="flex flex-1 flex-col justify-between p-4">
+        <div className="flex flex-1 flex-col justify-between p-3.5">
           <SidebarNav />
-          <div className="border-t border-border pt-4">
+          <div className="border-t border-border pt-3.5">
             <LogoutButton />
           </div>
         </div>
@@ -39,34 +40,35 @@ export default async function DashboardLayout({
 
       {/* Main - its own scroll context; header sticks to the top of this column */}
       <div className="flex min-w-0 flex-col overflow-y-auto">
-        <header className="sticky top-0 z-20 flex h-[72px] shrink-0 items-center gap-4 border-b border-border bg-card/80 px-5 backdrop-blur-sm sm:px-8">
+        <header className="sticky top-0 z-20 flex h-[68px] shrink-0 items-center gap-4 border-b border-border bg-card/85 px-5 backdrop-blur-md sm:px-8">
           <div className="lg:hidden">
             <Logo />
           </div>
 
           {/* Search */}
-          <div className="hidden flex-1 items-center gap-2.5 rounded-md border border-border bg-background px-3.5 py-2.5 sm:flex sm:max-w-[440px]">
-            <Search className="size-4 text-text-muted" />
+          <div className="hidden flex-1 items-center gap-2.5 rounded-[7px] border border-border bg-background px-3.5 py-2 transition-colors focus-within:border-primary/40 sm:flex sm:max-w-[420px]">
+            <Search className="size-[15px] text-text-muted" />
             <input
               placeholder="Search companies, news, or sectors"
-              className="w-full bg-transparent text-[13.5px] outline-none placeholder:text-text-muted"
+              className="w-full bg-transparent text-[13px] outline-none placeholder:text-text-muted"
             />
           </div>
 
-          <div className="ml-auto flex items-center gap-2.5">
-            <button
-              aria-label="Notifications"
-              className="relative grid size-10 place-items-center rounded-md border border-border bg-card text-text-secondary transition-colors hover:text-foreground"
-            >
-              <Bell className="size-[18px]" />
-              <span className="absolute right-2 top-2 size-2 rounded-full bg-down" />
-            </button>
+          <div className="ml-auto flex items-center gap-2">
+            <span className="mr-1 hidden items-center gap-1.5 rounded-full border border-border bg-card px-2.5 py-1 text-[11px] font-medium text-text-secondary md:inline-flex">
+              <span className="relative flex size-1.5">
+                <span className="absolute inline-flex size-full animate-ping rounded-full bg-up opacity-60" />
+                <span className="relative inline-flex size-1.5 rounded-full bg-up" />
+              </span>
+              Market live
+            </span>
+            <NotificationBell />
             <ThemeToggle />
-            <div className="flex items-center gap-2.5 rounded-full border border-border py-1 pl-1 pr-3">
-              <span className="grid size-8 place-items-center rounded-full bg-navy text-xs font-semibold text-white">
+            <div className="flex items-center gap-2 rounded-full border border-border py-1 pl-1 pr-3 transition-colors hover:border-primary/25">
+              <span className="grid size-7 place-items-center rounded-full bg-navy text-[11px] font-semibold text-white">
                 {initials || "U"}
               </span>
-              <span className="hidden text-[13px] font-semibold sm:block">
+              <span className="hidden text-[13px] font-medium sm:block">
                 {user.name?.split(" ")[0] || "Account"}
               </span>
             </div>
